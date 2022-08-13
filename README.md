@@ -37,4 +37,4 @@ Humberto da Torre Murad - [hdtorrad](https://github.com/hdtorrad "Perfil do gith
 
 Igor Almeida - [???]( "Perfil do github")
 
-> ##### <img src="support files/IF.svg.png" alt="IF" width="12"/> Projeto sendo desenvolvido na matéria de PJI, na turma 231 no ano de 2022.
+> ##### Projeto sendo desenvolvido na matéria de PJI, na turma 231 no ano de 2022.
