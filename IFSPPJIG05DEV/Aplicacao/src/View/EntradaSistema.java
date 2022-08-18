@@ -13,4 +13,10 @@ public class EntradaSistema
 	{
 		JOptionPane.showMessageDialog(null, "ID incorreto!");
 	}
+
+	public long leID()
+	{
+		long id = Long.parseLong(JOptionPane.showInputDialog("Insira o ID: "));
+		return id;
+	}
 }
