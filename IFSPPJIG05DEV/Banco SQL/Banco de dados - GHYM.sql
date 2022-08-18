@@ -177,9 +177,9 @@ cod_recgpu int NOT NULL,
 vrammax int,
 vrammin int,
 vramrec int,
-clockmax float,
-clockmin float,
-clockrec float,
+clockmax int,
+clockmin int,
+clockrec int,
 PRIMARY KEY (cod_recgpu)
 );
 
