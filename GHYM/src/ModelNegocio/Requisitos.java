@@ -2,7 +2,7 @@ package ModelNegocio;
 
 import ModelDAO.SoftwareDAO;
 
-public class Recomendacao 
+public class Requisitos 
 {
 	public String verifSoftware(String nome, byte tipo)
 	{
