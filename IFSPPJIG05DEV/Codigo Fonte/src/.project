@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>IFSP-PJI2-GR05-GHYM_Hardware_Comparison</name>
+	<name>src</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -16,7 +16,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1662328020655</id>
+			<id>1662327385479</id>
 			<name></name>
 			<type>30</type>
 			<matcher>
