@@ -259,26 +259,46 @@ Select * from GPU WHERE cod_gpu = 2;
 Select id_tipo,  nome_soft From Software WHERE cod_soft = 1;
 -- EXEMPLO: GOD OF WAR
 
--- RECOMENDAÇÃO CPU
--- RECOMENDAÇÃO MÁXIMA
-Select DISTINCT cod_cpu, id_marca, nome, clock, turbo, cores, threads, TDP, arquitetura, preco from Processador, RecomendacaoCpu, Software WHERE cod_soft = 1 and id_recomendacaocpu = cod_reccpu and turbo >= clockmax and cores >= coremax;
--- RECOMENDAÇÃO MÍNIMO
-Select DISTINCT cod_cpu, id_marca, nome, clock, turbo, cores, threads, TDP, arquitetura, preco from Processador, RecomendacaoCpu, Software WHERE cod_soft = 1 and id_recomendacaocpu = cod_reccpu and turbo >= clockmin and cores >= coremin;
--- RECOMENDAÇÃO EQUILIBRADA
-Select DISTINCT cod_cpu, id_marca, nome, clock, turbo, cores, threads, TDP, arquitetura, preco from Processador, RecomendacaoCpu, Software WHERE cod_soft = 1 and id_recomendacaocpu = cod_reccpu and turbo >= clockrec and cores >= corerec;
+-- RECOMENDAÇÃO DE UM SOFTWARE ESPECIFICO
+SELECT cod_soft, nome_soft, capacidademin, coremin, c.clockmin, g.clockmin, vrammin, capacidaderec, corerec, c.clockrec, g.clockrec, vramrec, capacidademax, coremax, c.clockmax, g.clockmax, vrammax  
+FROM Software
+INNER JOIN RecomendacaoRam
+ON id_recomendacaoram = cod_recram
+INNER JOIN RecomendacaoCpu c
+ON id_recomendacaocpu = cod_reccpu
+INNER JOIN RecomendacaoGpu g
+ON id_recomendacaogpu = cod_recgpu
+WHERE cod_soft IN (1);
 
--- RECOMENDAÇÃO GPU
--- RECOMENDAÇÃO MÁXIMA
-Select DISTINCT cod_gpu, id_marca, nome, clock, VRAM, TDP, preco from GPU, RecomendacaoGpu, Software WHERE cod_soft = 1 and id_recomendacaogpu = cod_recgpu and clock >= clockmax and VRAM >= vrammax;
--- RECOMENDAÇÃO MÍNIMA
-Select DISTINCT cod_gpu, id_marca, nome, clock, VRAM, TDP, preco from GPU, RecomendacaoGpu, Software WHERE cod_soft = 1 and id_recomendacaogpu = cod_recgpu and clock >= clockmin and VRAM >= vrammin;
--- RECOMENDAÇÃO EQUILIBRADA
-Select DISTINCT cod_gpu, id_marca, nome, clock, VRAM, TDP, preco from GPU, RecomendacaoGpu, Software WHERE cod_soft = 1 and id_recomendacaogpu = cod_recgpu and clock >= clockrec and VRAM >= vramrec;
+-- RECOMENDAÇÃO MÍNIMA DE SOFTWARES ESCOLHIDOS
+SELECT MAX(capacidademin), MAX(coremin), MAX(vrammin)
+FROM Software
+INNER JOIN RecomendacaoRam
+ON id_recomendacaoram = cod_recram
+INNER JOIN RecomendacaoCpu c
+ON id_recomendacaocpu = cod_reccpu
+INNER JOIN RecomendacaoGpu g
+ON id_recomendacaogpu = cod_recgpu
+WHERE cod_soft IN (1,3,4);
 
--- RECOMENDAÇÃO RAM
--- RECOMENDAÇÃO MÁXIMA
-Select DISTINCT cod_ram, id_marca, nome, frequencia, capacidade, tipo, preco from RAM, RecomendacaoRam, Software WHERE cod_soft = 1 and id_recomendacaoram = cod_recram and capacidade >= capacidademax;
--- RECOMENDAÇÃO MÍNIMO
-Select DISTINCT cod_ram, id_marca, nome, frequencia, capacidade, tipo, preco from RAM, RecomendacaoRam, Software WHERE cod_soft = 1 and id_recomendacaoram = cod_recram and capacidade >= capacidademin;
--- RECOMENDAÇÃO EQUILIBRADA
-Select DISTINCT cod_ram, id_marca, nome, frequencia, capacidade, tipo, preco from RAM, RecomendacaoRam, Software WHERE cod_soft = 1 and id_recomendacaoram = cod_recram and capacidade >= capacidaderec;
+-- RECOMENDAÇÃO RECOMENDADA DE SOFTWARES ESCOLHIDOS
+SELECT MAX(capacidaderec), MAX(corerec), MAX(vramrec)
+FROM Software
+INNER JOIN RecomendacaoRam
+ON id_recomendacaoram = cod_recram
+INNER JOIN RecomendacaoCpu c
+ON id_recomendacaocpu = cod_reccpu
+INNER JOIN RecomendacaoGpu g
+ON id_recomendacaogpu = cod_recgpu
+WHERE cod_soft IN (1,3,4);
+
+-- RECOMENDAÇÃO MÁXIMA DE SOFTWARES ESCOLHIDOS
+SELECT MAX(capacidademax), MAX(coremax), MAX(vrammax)
+FROM Software
+INNER JOIN RecomendacaoRam
+ON id_recomendacaoram = cod_recram
+INNER JOIN RecomendacaoCpu c
+ON id_recomendacaocpu = cod_reccpu
+INNER JOIN RecomendacaoGpu g
+ON id_recomendacaogpu = cod_recgpu
+WHERE cod_soft IN (1,3,4);
