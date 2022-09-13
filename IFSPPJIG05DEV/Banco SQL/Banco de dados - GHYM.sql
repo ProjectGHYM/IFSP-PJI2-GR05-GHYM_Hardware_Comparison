@@ -247,19 +247,16 @@ insert into Software (cod_soft, id_recomendacaoram, id_recomendacaogpu, id_recom
 (19, 1, 10, 1, 7, 'Geforce Experience'),
 (20, 1, 3, 1, 6, 'Office 365');
 
--- SELECT PARA COMPARAÇÃO DE CPU
-Select * from Processador WHERE cod_cpu = 1;
-Select * from Processador WHERE cod_cpu = 2;
+-- TELA DE COMPARAÇÃO DE CPU
+SELECT * FROM Processador WHERE cod_cpu = 1;
+SELECT * FROM Processador WHERE cod_cpu = 2;
 
--- SELECT PARA COMPARAÇÃO DE GPU
-Select * from GPU WHERE cod_gpu = 1;
-Select * from GPU WHERE cod_gpu = 2;
+-- TELA DE COMPARAÇÃO DE GPU
+SELECT * FROM GPU WHERE cod_gpu = 1;
+SELECT * FROM GPU WHERE cod_gpu = 2;
 
--- SELECT PARA SOFTWARE
-Select id_tipo,  nome_soft From Software WHERE cod_soft = 1;
--- EXEMPLO: GOD OF WAR
-
--- RECOMENDAÇÃO DE UM SOFTWARE ESPECIFICO
+-- EXEMPLO DE SOFTWARE PARA RECOMENDAÇÃO: GOD OF WAR
+-- TELA DE RECOMENDAÇÃO DE UM SOFTWARE ESPECIFICO
 SELECT cod_soft, nome_soft, capacidademin, coremin, c.clockmin, g.clockmin, vrammin, capacidaderec, corerec, c.clockrec, g.clockrec, vramrec, capacidademax, coremax, c.clockmax, g.clockmax, vrammax  
 FROM Software
 INNER JOIN RecomendacaoRam
@@ -270,7 +267,47 @@ INNER JOIN RecomendacaoGpu g
 ON id_recomendacaogpu = cod_recgpu
 WHERE cod_soft IN (1);
 
--- RECOMENDAÇÃO MÍNIMA DE SOFTWARES ESCOLHIDOS
+-- TELAS DE HARDWARES PARA UMA CONFIGURAÇÃO ESPECÍFICA
+-- EXEMPLO DE RECOMENDAÇÃO: REQUISITOS MÍNIMOS PARA GOD OF WAR
+
+-- CONSULTA SEM WHERE: MEMÓRIAS QUE SE ENCAIXAM NA RECOMENDAÇÃO MÍNIMA DO EXEMPLO EM ORDEM CRESCENTE DE CAPACIDADE EM GBS
+SELECT m.nome AS marca, r.nome AS memoria_ram, capacidade, frequencia, tipo, preco  
+FROM RAM r
+INNER JOIN Marca m ON m.cod_marca = r.id_marca
+INNER JOIN RecomendacaoRam ON capacidade >= capacidademin
+INNER JOIN Software ON id_recomendacaoram = cod_recram and cod_soft = 1
+ORDER BY capacidade ASC;
+
+-- CONSULTA COM WHERE: MEMÓRIAS QUE SE ENCAIXAM NA RECOMENDAÇÃO MÍNIMA DO EXEMPLO EM ORDEM CRESCENTE DE CAPACIDADE EM GBS
+SELECT m.nome AS marca, r.nome AS memoria_ram, capacidade, frequencia, tipo, preco  
+FROM RAM r
+INNER JOIN Marca m
+ON cod_marca = id_marca
+WHERE capacidade >= 4
+ORDER BY capacidade ASC;
+
+-- PROCESSADORES QUE SE ENCAIXAM NA RECOMENDAÇÃO MÍNIMA DO EXEMPLO EM ORDEM CRESCENTE DE CORES
+SELECT m.nome AS marca, p.nome AS processador, cores, threads, clock, turbo, mark, TDP, arquitetura, preco  
+FROM Processador p
+INNER JOIN Marca m
+ON cod_marca = id_marca
+WHERE cores >= 4 and clock >= 3.1
+ORDER BY cores ASC;
+
+-- PLACAS DE VÍDEO QUE SE ENCAIXAM NA RECOMENDAÇÃO MÍNIMA DO EXEMPLO EM ORDEM CRESCENTE DE VRAM EM GBS
+SELECT m.nome AS marca, g.nome AS gpu, vram, clock, mark, TDP, preco  
+FROM GPU g
+INNER JOIN Marca m
+ON cod_marca = id_marca
+WHERE vram >= 8
+ORDER BY vram ASC;
+
+-- TELAS DE HARDWARES PARA UMA CONFIGURAÇÃO ESPECÍFICA
+-- EXEMPLO DE MÚLTIPLAS ESCOLHAS DE SOFTWARE CONTENDO TODAS AS RECOMENDAÇÕES
+-- UTILIZAÇÃO DA FUNÇÃO MAX PARA ATENDER AS REQUISIÇÕES FEITAS
+-- POR EXEMPLO: UM USUÁRIO ESCOLHE O CHROME E O GOW, SENDO ASSIM, APARECERÁ A RECOMENDAÇÃO MÍNIMA QUE MAIS EXIGE HARDWARE, POIS PRECISARÁ ATENDER TODOS OS SOFTWARES
+
+-- CONFIGURAÇÃO MÍNIMA DE SOFTWARES ESCOLHIDOS
 SELECT MAX(capacidademin), MAX(coremin), MAX(vrammin)
 FROM Software
 INNER JOIN RecomendacaoRam
@@ -281,7 +318,7 @@ INNER JOIN RecomendacaoGpu g
 ON id_recomendacaogpu = cod_recgpu
 WHERE cod_soft IN (1,3,4);
 
--- RECOMENDAÇÃO RECOMENDADA DE SOFTWARES ESCOLHIDOS
+-- CONFIGURAÇÃO RECOMENDADA DE SOFTWARES ESCOLHIDOS
 SELECT MAX(capacidaderec), MAX(corerec), MAX(vramrec)
 FROM Software
 INNER JOIN RecomendacaoRam
@@ -292,7 +329,7 @@ INNER JOIN RecomendacaoGpu g
 ON id_recomendacaogpu = cod_recgpu
 WHERE cod_soft IN (1,3,4);
 
--- RECOMENDAÇÃO MÁXIMA DE SOFTWARES ESCOLHIDOS
+-- CONFIGURAÇÃO MÁXIMA DE SOFTWARES ESCOLHIDOS
 SELECT MAX(capacidademax), MAX(coremax), MAX(vrammax)
 FROM Software
 INNER JOIN RecomendacaoRam
