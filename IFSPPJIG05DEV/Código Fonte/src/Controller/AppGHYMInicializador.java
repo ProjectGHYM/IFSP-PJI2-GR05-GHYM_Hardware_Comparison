@@ -9,25 +9,25 @@ public class AppGHYMInicializador
 	{
 		boolean loopOn = true;
 		String nomesoft;
-		Exibicao exibir = new Exibicao();
-		Requisitos recomendacao = new Requisitos();
+		Exibicao objexibir = new Exibicao();
+		Requisitos objrequisito = new Requisitos();
 		
-		exibir.HiSystem();
+		objexibir.HiSystem();
 		
 		while(loopOn)
 		{
-			nomesoft = exibir.veSoftware();
+			nomesoft = objexibir.veSoftware();
 
-			if(exibir.confirmaSoftRec(nomesoft) == 0)
+			if(objexibir.confirmaSoftRec(nomesoft) == 0)
 			{
 				for(byte i = 0; i < 3; i++)
 				{
-					String recomenda = recomendacao.verifSoftware(nomesoft, i);
-					exibir.exiberecomendacao(recomenda, i);
+					String recomenda = objrequisito.verifSoftware(nomesoft, i);
+					objexibir.exiberecomendacao(recomenda, i);
 				}
 			}
 			
-			loopOn = exibir.continuar();
+			loopOn = objexibir.continuar();
 			
 		}
 		
