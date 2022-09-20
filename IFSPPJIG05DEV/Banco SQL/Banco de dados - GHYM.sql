@@ -151,64 +151,59 @@ insert into Tipo values
 
 create table RecomendacaoCpu(
 cod_reccpu int NOT NULL,
-coremax int,
 coremin int,
 corerec int,
-clockmax float,
 clockmin float,
 clockrec float,
 PRIMARY KEY (cod_reccpu)
 );
 
 insert into RecomendacaoCpu values
-(1, 6, 2, 4, 3.60, 2.00, 3.10),
-(2, 8, 4, 6, 3.90, 3.10, 3.60),
-(3, 6, 4, 4, 3.90, 2.60, 3.20),
-(4, 8, 4, 4, 3.90, 3.20, 3.40),
-(5, 8, 2, 4, 4.10, 2.80, 3.00),
-(6, 6, 4, 4, 3.80, 2.60, 3.40),
-(7, 8, 4, 4, 4.00, 3.10, 3.50),
-(8, 6, 2, 4, 3.80, 2.10, 3.30),
-(9, 6, 2, 4, 3.60, 2.60, 3.10),
-(10, 6, 4, 4, 4.00, 3.10, 3.70);
+(1, 2, 4, 2.00, 3.10),
+(2, 4, 6, 3.10, 3.60),
+(3, 4, 4, 2.60, 3.20),
+(4, 4, 4, 3.20, 3.40),
+(5, 2, 4, 2.80, 3.00),
+(6, 4, 4, 2.60, 3.40),
+(7, 4, 4, 3.10, 3.50),
+(8, 2, 4, 2.10, 3.30),
+(9, 2, 4, 2.60, 3.10),
+(10, 4, 4, 3.10, 3.70);
 
 create table RecomendacaoGpu(
 cod_recgpu int NOT NULL,
-vrammax int,
 vrammin int,
 vramrec int,
-clockmax int,
 clockmin int,
 clockrec int,
 PRIMARY KEY (cod_recgpu)
 );
 
 insert into RecomendacaoGpu values
-(1, 6, 2, 4, 1850, 900, 1100),
-(2, 10, 4, 6, 1950, 1100, 1850),
-(3, 6, 2, 4, 1600, 800, 1300),
-(4, 8, 4, 6, 2100, 1050, 1400),
-(5, 6, 2, 4, 1550, 760, 1250),
-(6, 8, 4, 6, 1820, 830, 1500),
-(7, 6, 2, 4, 1430, 800, 1120),
-(8, 6, 2, 4, 1580, 790, 1260),
-(9, 8, 4, 6, 1900, 900, 1600),
-(10, 6, 2, 4, 1560, 800, 1260);
+(1, 2, 4, 900, 1100),
+(2, 4, 6, 1100, 1850),
+(3, 2, 4, 800, 1300),
+(4, 4, 6, 1050, 1400),
+(5, 2, 4, 760, 1250),
+(6, 4, 6, 830, 1500),
+(7, 2, 4, 800, 1120),
+(8, 2, 4, 790, 1260),
+(9, 4, 6, 900, 1600),
+(10, 2, 4, 800, 1260);
 
 create table RecomendacaoRam(
 cod_recram int NOT NULL,
-capacidademax int,
 capacidademin int,
 capacidaderec int,
 PRIMARY KEY (cod_recram)
 );
 
 insert into RecomendacaoRam values
-(1, 16, 4, 8),
-(2, 6, 2, 4),
-(3, 16, 6, 8),
-(4, 12, 4, 8),
-(5, 8, 2, 4);
+(1, 4, 8),
+(2, 2, 4),
+(3, 6, 8),
+(4, 4, 8),
+(5, 2, 4);
 
 create table Software(
 cod_soft int NOT NULL,
@@ -257,7 +252,7 @@ SELECT * FROM GPU WHERE cod_gpu = 2;
 
 -- EXEMPLO DE SOFTWARE PARA RECOMENDAÇÃO: GOD OF WAR
 -- TELA DE RECOMENDAÇÃO DE UM SOFTWARE ESPECIFICO
-SELECT cod_soft, nome_soft, capacidademin, coremin, c.clockmin, g.clockmin, vrammin, capacidaderec, corerec, c.clockrec, g.clockrec, vramrec, capacidademax, coremax, c.clockmax, g.clockmax, vrammax  
+SELECT cod_soft, nome_soft, capacidademin, coremin, c.clockmin, g.clockmin, vrammin, capacidaderec, corerec, c.clockrec, g.clockrec, vramrec 
 FROM Software
 INNER JOIN RecomendacaoRam
 ON id_recomendacaoram = cod_recram
@@ -320,17 +315,6 @@ WHERE cod_soft IN (1,3,4);
 
 -- CONFIGURAÇÃO RECOMENDADA DE SOFTWARES ESCOLHIDOS
 SELECT MAX(capacidaderec), MAX(corerec), MAX(vramrec)
-FROM Software
-INNER JOIN RecomendacaoRam
-ON id_recomendacaoram = cod_recram
-INNER JOIN RecomendacaoCpu c
-ON id_recomendacaocpu = cod_reccpu
-INNER JOIN RecomendacaoGpu g
-ON id_recomendacaogpu = cod_recgpu
-WHERE cod_soft IN (1,3,4);
-
--- CONFIGURAÇÃO MÁXIMA DE SOFTWARES ESCOLHIDOS
-SELECT MAX(capacidademax), MAX(coremax), MAX(vrammax)
 FROM Software
 INNER JOIN RecomendacaoRam
 ON id_recomendacaoram = cod_recram
