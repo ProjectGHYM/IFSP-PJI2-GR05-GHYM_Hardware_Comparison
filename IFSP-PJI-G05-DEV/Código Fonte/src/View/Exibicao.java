@@ -7,16 +7,35 @@ import ModelDAO.SoftwareBD;
 
 public class Exibicao {
 	public void HiSystem() {
-		JOptionPane.showMessageDialog(null, "Bem-vindo ao Software da GHYM!");
+		int hisystem = JOptionPane.showConfirmDialog(null, "Bem-vindo ao Software da GHYM!", "GHYM", JOptionPane.DEFAULT_OPTION);
+		if(hisystem == -1){
+			JOptionPane.showMessageDialog(null, "Fechando Software...", "Janela Fechada Ou Cancelada", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
+		}
 	}
 
 	public String veSoftware() {
-		return JOptionPane.showInputDialog(null, "Insira o nome do software:");
+		String nomesoft = JOptionPane.showInputDialog(null, "Insira o nome do software:");
+		if(nomesoft == null){
+			JOptionPane.showMessageDialog(null, "Fechando Software...", "Janela Fechada Ou Cancelada", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
+		}
+		if(nomesoft.equals("")){
+			return "null";
+		}
+		return nomesoft;
 	}
 
 	public boolean continuaSoft() {
-		boolean esc = JOptionPane.showConfirmDialog(null, "Deseja Escolher Outro Softare Além Do(s) Já Escolhido(s):","Escolhas de Software", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_NO_OPTION;
-		return esc;
+		int esc = JOptionPane.showConfirmDialog(null, "Deseja Escolher Outro Softare Além Do(s) Já Escolhido(s):","Escolhas de Software", JOptionPane.YES_NO_OPTION);
+		if(esc == -1){
+			JOptionPane.showMessageDialog(null, "Fechando Software...", "Janela Fechada Ou Cancelada", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
+		}
+		if(esc == 0){
+			return true;
+		}
+		return false;
 	}
 
 	public String repetiSoft(ArrayList<String> escsoft, String nomesoft){
@@ -33,10 +52,19 @@ public class Exibicao {
 		return "";
 	}
 
-	public int confirmaSoftRec(String mensagem) {
-		return JOptionPane.showConfirmDialog(null, "Confirme o software a ser buscado:\n" + mensagem);
+	public int confirmaSoftRec(String nomesoft) {
+		int escsoft = JOptionPane.showConfirmDialog(null, "Confirme o software a ser buscado:\n" + nomesoft);
+		if(escsoft == -1){
+			JOptionPane.showMessageDialog(null, "Fechando Software...", "Janela Fechada Ou Cancelada", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
+		}
+		return escsoft;
 	}
 	public byte Error(String nomesoft){
+		if(nomesoft == "null"){
+			JOptionPane.showMessageDialog(null, "Valor Nulo", "NULL", JOptionPane.ERROR_MESSAGE);
+			return 0;
+		}
 		byte confirm = 0;
 		String nome_softs[] = new String[20];
 		SoftwareBD softbd = new SoftwareBD();
