@@ -1,13 +1,9 @@
 package ModelDAO;
 
-public class SoftwareDAO 
-{
-	public String achaRec(String nome, byte tipo) 
-	{
-		if(tipo == 0)
-		{
-			if(nome.equalsIgnoreCase("God Of War"))
-			{
+public class SoftwareDAO {
+	public String achaRec(String nome, byte tipo) {
+		if (tipo == 0) {
+			if (nome.equalsIgnoreCase("God Of War")){
 				float requisitos[][] = new float[3][3];
 				// primeiro [0] é recomendação mínima: 
 				// segundo é a quantidade de núcleos X clock
@@ -26,85 +22,49 @@ public class SoftwareDAO
 				requisitos[2][0] = 32f;
 				requisitos[2][1] = 19500f;
 				requisitos[2][2] = 16f;
-
-				return requisitos;
+				return " a ; a ; a ";
 			}
 
-			else if(nome.equalsIgnoreCase("Counter Strike"))
-			{
+			else if (nome.equalsIgnoreCase("Counter Strike")) {
 				return " E6600 ; GT 710 ; 2 GB";
 			}
 
-			else if(nome.equalsIgnoreCase("Google Chrome"))
-			{
+			else if (nome.equalsIgnoreCase("Google Chrome")) {
 				return " Pentium_4 ; Não há necessidade ; 2 GB";
 			}
 
-			else
-			{
+			else {
 				return " Não existe ";
 			}
 		}
-		else if(tipo == 1)
-		{
-			if(nome.equalsIgnoreCase("God Of War"))
-			{
-				return " i9-9900k ; RTX 3080 ; 20 GB";
-			}
-
-			else if(nome.equalsIgnoreCase("Counter Strike"))
-			{
-				return " i7-3770k ; GTX 1080ti ; 16 GB";
-			}
-
-			else if(nome.equalsIgnoreCase("Google Chrome"))
-			{
-				return " i5-4690 ; Não há necessidade ; 16 GB";
-			}
-
-			else
-			{
-				return " Não existe ";
-			}
-		}
-
-		else if(tipo == 2)
-		{
-			if(nome.equalsIgnoreCase("God Of War"))
-			{
+		else if (tipo == 1) {
+			if (nome.equalsIgnoreCase("God Of War")) {
 				return " i7-10700k ; RX5600xt ; 16 GB";
 			}
 
-			else if(nome.equalsIgnoreCase("Counter Strike"))
-			{
+			else if (nome.equalsIgnoreCase("Counter Strike")) {
 				return " i5-2400 ; GT 1030 ; 10 GB";
 			}
 
-			else if(nome.equalsIgnoreCase("Google Chrome"))
-			{
+			else if (nome.equalsIgnoreCase("Google Chrome")) {
 				return " i3-4170 ; Não há necessidade ; 6 GB";
-			}
-			else
-			{
+			} else {
 				return " Não existe ";
 			}
 		}
-		
-		else
-		{
+		else {
 			return " Erro de Processamento";
 		}
 	}
-
 	public String AchaEquipamentos(float[][] requisitos)
 	{
-		String Processadores;
+		String Processadores = "";
 		String CatalogoCPU[][] = new String[5][2];
 		// 5 processadores serão cadastrados com nome e "clock real"
-		String GPU;
+		String GPU = "";
 		String CatalogoGPU[][] = new String[5][2];
 		// 5 GPUs serão cadastrados com nome e clock X vram
-		String RAM;
+		String RAM = "";
 		String CatalogoRAM[][] = new String[5][2];
 		// 5 RAMs serão cadastrados com nome e capacidade
 		
