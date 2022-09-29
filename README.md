@@ -31,10 +31,10 @@ Davi de Jesus Duarte - [???]( "Perfil do github")
 
 Gabriel De Oliveira - [Tavares194](https://github.com/Tavares194 "Perfil do github")
 
-Gustavo Henrique de Moraes - [???]("Perfil do github")
+Gustavo Henrique de Moraes - [GustavoMraes](https://github.com/hdtorrad "Perfil do github")
 
 Humberto da Torre Murad - [hdtorrad](https://github.com/hdtorrad "Perfil do github")
 
-Igor Almeida - [???]( "Perfil do github")
+Igor Almeida - [zueirinha](https://github.com/zuerinha "Perfil do github")
 
 > ##### Projeto sendo desenvolvido na matéria de PJI, na turma 231 no ano de 2022.
