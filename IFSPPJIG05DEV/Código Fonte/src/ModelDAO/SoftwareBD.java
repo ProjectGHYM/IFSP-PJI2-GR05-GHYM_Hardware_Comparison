@@ -3,13 +3,21 @@ package ModelDAO;
 import java.sql.*;
 
 public class SoftwareBD {
-    public String[] readSoft(String nome_softs[]) {
+    static String nome_softs[] = new String[20];
+    public String[] getNome_softs() {
+        return nome_softs;
+    }
+    public void setNome_softs(String[] nome_softs) {
+        SoftwareBD.nome_softs = nome_softs;
+    }
+    public void readSoftwareBD() {
         Connection c;
         c = ConexaoBD.getConexao();
+        SoftwareBD softbd = new SoftwareBD();
         PreparedStatement ps = null;
         ResultSet rs = null;
         String query = null;
-        query = "SELECT nome_soft FROM Software";
+        query = "SELECT nome_soft FROM Software;";
         try {
             int i = 0;
             ps = c.prepareStatement(query);
@@ -18,9 +26,9 @@ public class SoftwareBD {
                 nome_softs[i] = rs.getString("nome_soft");
                 ++i;
             }
-            return nome_softs;
+            softbd.setNome_softs(nome_softs);
         } catch (SQLException e) {
-            return nome_softs;
+            System.exit(0);
         } finally {
             // Conexao.fecharConexao(c, ps, rs);
         }
