@@ -56,7 +56,7 @@ FOREIGN KEY (id_marca) REFERENCES Marca(cod_marca)
 
 insert into Processador (cod_cpu, id_marca, nome, clock, turbo, cores, threads, mark, TDP, arquitetura, preco) values
 (1, 1, 'I5-2400', 3.10, 3.40, 4, 4, 3843, 35, 'LGA1155', 399.99),
-(2, 2, 'Ryzen 5 5600G', 3.90, 4.20, 8, 6, 19821, 65, 'AM4', 1299.99), 
+(2, 2, 'Ryzen 5 5600G', 3.90, 4.20, 8, 6, 19821, 65, 'AM4', 1299.99),
 (3, 1, 'I5-4590T', 2.00, 3.00, 4, 4, 3984, 35, 'LGA1150', 514.99),
 (4, 1, 'I3-4360', 3.70, 3.70, 2, 4, 3699, 54, 'LGA1150', 249.99),
 (5, 1, 'I7-4790S', 3.20, 4.00, 4, 8, 6891, 65, 'LGA1150', 879.99),
@@ -252,15 +252,15 @@ SELECT * FROM GPU WHERE cod_gpu = 2;
 
 -- EXEMPLO DE SOFTWARE PARA RECOMENDAÇÃO: GOD OF WAR
 -- TELA DE RECOMENDAÇÃO DE UM SOFTWARE ESPECIFICO
-SELECT cod_soft, nome_soft, capacidademin, coremin, c.clockmin, g.clockmin, vrammin, capacidaderec, corerec, c.clockrec, g.clockrec, vramrec 
+CREATE VIEW rec_soft AS
+SELECT cod_soft, nome_soft, capacidademin, coremin, c.clockmin AS clockmin_cpu, g.clockmin AS clockmin_gpu, vrammin, capacidaderec, corerec, c.clockrec AS clockrec_cpu, g.clockrec AS clockrec_gpu, vramrec
 FROM Software
 INNER JOIN RecomendacaoRam
 ON id_recomendacaoram = cod_recram
 INNER JOIN RecomendacaoCpu c
 ON id_recomendacaocpu = cod_reccpu
 INNER JOIN RecomendacaoGpu g
-ON id_recomendacaogpu = cod_recgpu
-WHERE cod_soft IN (1);
+ON id_recomendacaogpu = cod_recgpu;
 
 -- TELAS DE HARDWARES PARA UMA CONFIGURAÇÃO ESPECÍFICA
 -- EXEMPLO DE RECOMENDAÇÃO: REQUISITOS MÍNIMOS PARA GOD OF WAR
@@ -274,27 +274,27 @@ INNER JOIN Software ON id_recomendacaoram = cod_recram and cod_soft = 1
 ORDER BY capacidade ASC;
 
 -- CONSULTA COM WHERE: MEMÓRIAS QUE SE ENCAIXAM NA RECOMENDAÇÃO MÍNIMA DO EXEMPLO EM ORDEM CRESCENTE DE CAPACIDADE EM GBS
+CREATE VIEW recmin_ram AS
 SELECT m.nome AS marca, r.nome AS memoria_ram, capacidade, frequencia, tipo, preco  
 FROM RAM r
 INNER JOIN Marca m
 ON cod_marca = id_marca
-WHERE capacidade >= 4
 ORDER BY capacidade ASC;
 
 -- PROCESSADORES QUE SE ENCAIXAM NA RECOMENDAÇÃO MÍNIMA DO EXEMPLO EM ORDEM CRESCENTE DE CORES
+CREATE VIEW recmin_cpu AS
 SELECT m.nome AS marca, p.nome AS processador, cores, threads, clock, turbo, mark, TDP, arquitetura, preco  
 FROM Processador p
 INNER JOIN Marca m
 ON cod_marca = id_marca
-WHERE cores >= 4 and clock >= 3.1
 ORDER BY cores ASC;
 
 -- PLACAS DE VÍDEO QUE SE ENCAIXAM NA RECOMENDAÇÃO MÍNIMA DO EXEMPLO EM ORDEM CRESCENTE DE VRAM EM GBS
+CREATE VIEW recmin_gpu AS
 SELECT m.nome AS marca, g.nome AS gpu, vram, clock, mark, TDP, preco  
 FROM GPU g
 INNER JOIN Marca m
 ON cod_marca = id_marca
-WHERE vram >= 8
 ORDER BY vram ASC;
 
 -- TELAS DE HARDWARES PARA UMA CONFIGURAÇÃO ESPECÍFICA
@@ -303,23 +303,43 @@ ORDER BY vram ASC;
 -- POR EXEMPLO: UM USUÁRIO ESCOLHE O CHROME E O GOW, SENDO ASSIM, APARECERÁ A RECOMENDAÇÃO MÍNIMA QUE MAIS EXIGE HARDWARE, POIS PRECISARÁ ATENDER TODOS OS SOFTWARES
 
 -- CONFIGURAÇÃO MÍNIMA DE SOFTWARES ESCOLHIDOS
-SELECT MAX(capacidademin), MAX(coremin), MAX(vrammin)
+CREATE OR REPLACE VIEW recmin_softs AS
+SELECT cod_soft, capacidademin, coremin, vrammin
 FROM Software
 INNER JOIN RecomendacaoRam
 ON id_recomendacaoram = cod_recram
 INNER JOIN RecomendacaoCpu c
 ON id_recomendacaocpu = cod_reccpu
 INNER JOIN RecomendacaoGpu g
-ON id_recomendacaogpu = cod_recgpu
-WHERE cod_soft IN (1,3,4);
+ON id_recomendacaogpu = cod_recgpu;
 
 -- CONFIGURAÇÃO RECOMENDADA DE SOFTWARES ESCOLHIDOS
-SELECT MAX(capacidaderec), MAX(corerec), MAX(vramrec)
+CREATE OR REPLACE VIEW recs_softs AS
+SELECT cod_soft, capacidaderec, corerec, vramrec
 FROM Software
 INNER JOIN RecomendacaoRam
 ON id_recomendacaoram = cod_recram
 INNER JOIN RecomendacaoCpu c
 ON id_recomendacaocpu = cod_reccpu
 INNER JOIN RecomendacaoGpu g
-ON id_recomendacaogpu = cod_recgpu
+ON id_recomendacaogpu = cod_recgpu;
+
+SELECT * FROM rec_soft
+WHERE cod_soft IN (1);
+
+SELECT * FROM recmin_ram
+WHERE capacidade >= 4;
+
+SELECT * FROM recmin_cpu
+WHERE cores >= 4 and clock >= 3.1;
+
+SELECT * FROM recmin_gpu
+WHERE vram >= 8;
+
+SELECT max(capacidademin), max(coremin), max(vrammin)
+FROM recmin_softs
+WHERE cod_soft IN (1,3,4);
+
+SELECT max(capacidaderec), max(corerec), max(vramrec)
+FROM recs_softs
 WHERE cod_soft IN (1,3,4);
