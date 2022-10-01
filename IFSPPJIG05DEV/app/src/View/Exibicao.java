@@ -103,60 +103,122 @@ public class Exibicao {
 				+ recomenda[1] + "\nRAM: " + recomenda[2]);
 	}
 	public void exibirMin(String escsoft, String resultNomeCPU[], String resultNomeGPU[], String resultNomeRAM[]){
-		System.out.print("\n" + escsoft + "\nRequisitos Minimos" + "\nProcessador: ");
-		for(int i = 0; i<resultNomeCPU.length; ++i){
-			if( i < (resultNomeCPU.length - 1)){
-				System.out.print(resultNomeCPU[i] + ", ");
+		if(escsoft.equals("null")){
+			System.out.print("\nProgramas Escolhidos\n\nRequisitos Minimos" + "\nProcessador: ");
+			for(int i = 0; i<resultNomeCPU.length; ++i){
+				if( i < (resultNomeCPU.length - 1)){
+					System.out.print(resultNomeCPU[i] + ", ");
+				}
+				else{
+					System.out.print(resultNomeCPU[i] + ".");
+				}
 			}
-			else{
-				System.out.print(resultNomeCPU[i] + ".");
+			System.out.print("\n\nPlaca de Vídeo: ");
+			for(int i = 0; i<resultNomeGPU.length; ++i){
+				if( i < (resultNomeGPU.length - 1)){
+					System.out.print(resultNomeGPU[i] + ", ");
+				}
+				else{
+					System.out.print(resultNomeGPU[i] + ".");
+				}
+			}
+			System.out.print("\n\nRAM: ");
+			for(int i = 0; i<resultNomeRAM.length; ++i){
+				if( i < (resultNomeRAM.length - 1)){
+					System.out.print(resultNomeRAM[i] + ", ");
+				}
+				else{
+					System.out.print(resultNomeRAM[i] + ".");
+				}
 			}
 		}
-		System.out.print("\n\nPlaca de Vídeo: ");
-		for(int i = 0; i<resultNomeGPU.length; ++i){
-			if( i < (resultNomeGPU.length - 1)){
-				System.out.print(resultNomeGPU[i] + ", ");
+		else{
+			System.out.print("\n" + escsoft + "\nRequisitos Minimos" + "\nProcessador: ");
+			for(int i = 0; i<resultNomeCPU.length; ++i){
+				if( i < (resultNomeCPU.length - 1)){
+					System.out.print(resultNomeCPU[i] + ", ");
+				}
+				else{
+					System.out.print(resultNomeCPU[i] + ".");
+				}
 			}
-			else{
-				System.out.print(resultNomeGPU[i] + ".");
+			System.out.print("\n\nPlaca de Vídeo: ");
+			for(int i = 0; i<resultNomeGPU.length; ++i){
+				if( i < (resultNomeGPU.length - 1)){
+					System.out.print(resultNomeGPU[i] + ", ");
+				}
+				else{
+					System.out.print(resultNomeGPU[i] + ".");
+				}
 			}
-		}
-		System.out.print("\n\nRAM: ");
-		for(int i = 0; i<resultNomeRAM.length; ++i){
-			if( i < (resultNomeRAM.length - 1)){
-				System.out.print(resultNomeRAM[i] + ", ");
-			}
-			else{
-				System.out.print(resultNomeRAM[i] + ".");
+			System.out.print("\n\nRAM: ");
+			for(int i = 0; i<resultNomeRAM.length; ++i){
+				if( i < (resultNomeRAM.length - 1)){
+					System.out.print(resultNomeRAM[i] + ", ");
+				}
+				else{
+					System.out.print(resultNomeRAM[i] + ".");
+				}
 			}
 		}
 	}
 	public void exibirRec(String escsoft, String resultNomeCPU[], String resultNomeGPU[], String resultNomeRAM[]){
-		System.out.print("\n\n\n" + escsoft + "\nRequisitos Recomendados" + "\nProcessador: ");
-		for(int i = 0; i<resultNomeCPU.length; ++i){
-			if( i < (resultNomeCPU.length - 1)){
-				System.out.print(resultNomeCPU[i] + ", ");
+		if(escsoft.equals("null")){
+			System.out.print("\n\n\nRequisitos Recomendados" + "\nProcessador: ");
+			for(int i = 0; i<resultNomeCPU.length; ++i){
+				if( i < (resultNomeCPU.length - 1)){
+					System.out.print(resultNomeCPU[i] + ", ");
+				}
+				else{
+					System.out.print(resultNomeCPU[i] + ".");
+				}
 			}
-			else{
-				System.out.print(resultNomeCPU[i] + ".");
+			System.out.print("\n\nPlaca de Vídeo: ");
+			for(int i = 0; i<resultNomeGPU.length; ++i){
+				if( i < (resultNomeGPU.length - 1)){
+					System.out.print(resultNomeGPU[i] + ", ");
+				}
+				else{
+					System.out.print(resultNomeGPU[i] + ".");
+				}
+			}
+			System.out.print("\n\nRAM: ");
+			for(int i = 0; i<resultNomeRAM.length; ++i){
+				if( i < (resultNomeRAM.length - 1)){
+					System.out.print(resultNomeRAM[i] + ", ");
+				}
+				else{
+					System.out.print(resultNomeRAM[i] + ".");
+				}
 			}
 		}
-		System.out.print("\n\nPlaca de Vídeo: ");
-		for(int i = 0; i<resultNomeGPU.length; ++i){
-			if( i < (resultNomeGPU.length - 1)){
-				System.out.print(resultNomeGPU[i] + ", ");
+		else{
+			System.out.print("\n\n\n" + escsoft + "\nRequisitos Recomendados" + "\nProcessador: ");
+			for(int i = 0; i<resultNomeCPU.length; ++i){
+				if( i < (resultNomeCPU.length - 1)){
+					System.out.print(resultNomeCPU[i] + ", ");
+				}
+				else{
+					System.out.print(resultNomeCPU[i] + ".");
+				}
 			}
-			else{
-				System.out.print(resultNomeGPU[i] + ".");
+			System.out.print("\n\nPlaca de Vídeo: ");
+			for(int i = 0; i<resultNomeGPU.length; ++i){
+				if( i < (resultNomeGPU.length - 1)){
+					System.out.print(resultNomeGPU[i] + ", ");
+				}
+				else{
+					System.out.print(resultNomeGPU[i] + ".");
+				}
 			}
-		}
-		System.out.print("\n\nRAM: ");
-		for(int i = 0; i<resultNomeRAM.length; ++i){
-			if( i < (resultNomeRAM.length - 1)){
-				System.out.print(resultNomeRAM[i] + ", ");
-			}
-			else{
-				System.out.print(resultNomeRAM[i] + ".");
+			System.out.print("\n\nRAM: ");
+			for(int i = 0; i<resultNomeRAM.length; ++i){
+				if( i < (resultNomeRAM.length - 1)){
+					System.out.print(resultNomeRAM[i] + ", ");
+				}
+				else{
+					System.out.print(resultNomeRAM[i] + ".");
+				}
 			}
 		}
 	}

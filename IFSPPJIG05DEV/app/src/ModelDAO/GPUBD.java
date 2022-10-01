@@ -51,7 +51,7 @@ public class GPUBD {
         for(int i = 0; i < 15; ++i){
             if(Float.parseFloat(GPU[i][1]) * Float.parseFloat(GPU[i][2]) >= Float.parseFloat(recGPU[0]) * Float.parseFloat(recGPU[1])){
                 if(Float.parseFloat(GPU[i][1]) * Float.parseFloat(GPU[i][2]) < Float.parseFloat(recGPU[2]) * Float.parseFloat(recGPU[3])){
-                    resultNomeGPU[j] = GPU[i][0] + GPU[i][2] + " MHz";
+                    resultNomeGPU[j] = GPU[i][0] + " " + GPU[i][2] + "GB";
                     ++j;
                 }
             }
@@ -69,7 +69,45 @@ public class GPUBD {
         j = 0;
         for(int i = 0; i < 15; ++i){
             if(Float.parseFloat(GPU[i][1]) * Float.parseFloat(GPU[i][2]) >= Float.parseFloat(recGPU[2]) * Float.parseFloat(recGPU[3])){
-                resultNomeGPU[j] = GPU[i][0] + GPU[i][2] + " MHz";
+                resultNomeGPU[j] = GPU[i][0] + " " + GPU[i][2] + "GB";
+                ++j;
+            }
+        }
+        return resultNomeGPU;
+    }
+    public String[] getGeralMinGPUBD(float resultGPUMin, float resultGPURec) {
+        int j = 0;
+        for(int i = 0; i < 15; ++i){
+            if(Float.parseFloat(GPU[i][1]) * Float.parseFloat(GPU[i][2]) >= resultGPUMin){
+                if(Float.parseFloat(GPU[i][1]) * Float.parseFloat(GPU[i][2]) < resultGPURec){
+                    ++j;
+                }
+            }
+        }
+        String resultNomeGPU[] = new String[j];
+        j = 0;
+        for(int i = 0; i < 15; ++i){
+            if(Float.parseFloat(GPU[i][1]) * Float.parseFloat(GPU[i][2]) >= resultGPUMin){
+                if(Float.parseFloat(GPU[i][1]) * Float.parseFloat(GPU[i][2]) < resultGPURec){
+                    resultNomeGPU[j] = GPU[i][0] + " " + GPU[i][2] + "GB";
+                    ++j;
+                }
+            }
+        }
+        return resultNomeGPU;
+    }
+    public String[] getGeralRecGPUBD(float resultGPU) {
+        int j = 0;
+        for(int i = 0; i < 15; ++i){
+            if(Float.parseFloat(GPU[i][1]) * Float.parseFloat(GPU[i][2]) >= resultGPU){
+                ++j;
+            }
+        }
+        String resultNomeGPU[] = new String[j];
+        j = 0;
+        for(int i = 0; i < 15; ++i){
+            if(Float.parseFloat(GPU[i][1]) * Float.parseFloat(GPU[i][2]) >= resultGPU){
+                resultNomeGPU[j] = GPU[i][0] + " " + GPU[i][2] + "GB";
                 ++j;
             }
         }

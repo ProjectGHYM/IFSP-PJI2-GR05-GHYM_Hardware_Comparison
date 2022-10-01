@@ -75,4 +75,42 @@ public class CPUBD {
         }
         return resultNomeCPU;
     }
+    public String[] getGeralMinCPUBD(float resultCPUMin, float resultCPURec) {
+        int j = 0;
+        for(int i = 0; i < 15; ++i){
+            if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) >= resultCPUMin){
+                if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) < resultCPURec){
+                    ++j;
+                }
+            }
+        }
+        String resultNomeCPU[] = new String[j];
+        j = 0;
+        for(int i = 0; i < 15; ++i){
+            if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) >= resultCPUMin){
+                if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) < resultCPURec){
+                    resultNomeCPU[j] = CPU[i][0];
+                    ++j;
+                }
+            }
+        }
+        return resultNomeCPU;
+    }
+    public String[] getGeralRecCPUBD(float resultCPU) {
+        int j = 0;
+        for(int i = 0; i < 15; ++i){
+            if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) >= resultCPU){
+                ++j;
+            }
+        }
+        String resultNomeCPU[] = new String[j];
+        j = 0;
+        for(int i = 0; i < 15; ++i){
+            if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) >= resultCPU){
+                resultNomeCPU[j] = CPU[i][0];
+                ++j;
+            }
+        }
+        return resultNomeCPU;
+    }
 }

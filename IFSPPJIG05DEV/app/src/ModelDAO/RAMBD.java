@@ -75,4 +75,42 @@ public class RAMBD {
         }
         return resultNomeRAM;
     }
+    public String[] getGeralMinRAMBD(float resultRAMMin, float resultRAMRec) {
+        int j = 0;
+        for(int i = 0; i < 15; ++i){
+            if(Float.parseFloat(RAM[i][1])>= resultRAMMin){
+                if(Float.parseFloat(RAM[i][1]) < resultRAMRec){
+                    ++j;
+                }
+            }
+        }
+        String resultNomeRAM[] = new String[j];
+        j = 0;
+        for(int i = 0; i < 15; ++i){
+            if(Float.parseFloat(RAM[i][1]) >= resultRAMMin){
+                if(Float.parseFloat(RAM[i][1]) < resultRAMRec){
+                    resultNomeRAM[j] = RAM[i][0] + " " + RAM[i][1] + "GB " + RAM[i][2] + " MHz";
+                    ++j;
+                }
+            }
+        }
+        return resultNomeRAM;
+    }
+    public String[] getGeralRecRAMBD(float resultRAM) {
+        int j = 0;
+        for(int i = 0; i < 15; ++i){
+            if(Float.parseFloat(RAM[i][1]) >= resultRAM){
+                ++j;
+            }
+        }
+        String resultNomeRAM[] = new String[j];
+        j = 0;
+        for(int i = 0; i < 15; ++i){
+            if(Float.parseFloat(RAM[i][1]) >= resultRAM){
+                resultNomeRAM[j] = RAM[i][0] + " " + RAM[i][1] + "GB " + RAM[i][2] + " MHz";
+                ++j;
+            }
+        }
+        return resultNomeRAM;
+    }
 }
