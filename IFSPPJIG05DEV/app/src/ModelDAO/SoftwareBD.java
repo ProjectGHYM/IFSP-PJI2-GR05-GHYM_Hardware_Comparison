@@ -7,9 +7,9 @@ public class SoftwareBD
     static String nome_softs[] = new String[20];
 
     public String[] getNome_softs() 
-        {
-            return nome_softs;
-        }
+    {
+        return nome_softs;
+    }
     
     public void setNome_softs(String[] nome_softs) 
     {
