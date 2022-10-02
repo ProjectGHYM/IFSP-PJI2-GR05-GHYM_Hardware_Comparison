@@ -2,115 +2,170 @@ package ModelDAO;
 
 import java.sql.*;
 
-public class CPUBD {
-    static String CPU[][] = new String[15][3];
-    public static String[][] getCPU() {
-        return CPU;
+public class CPUBD 
+{
+    static String listaProcessadorBD[][] = new String[15][3];
+    
+    public static String[][] getListaProcessadorBD() 
+    {
+        return listaProcessadorBD;
     }
-    public static void setCPU(String[][] CPU) {
-        CPUBD.CPU = CPU;
+
+    public static void setListaProcessadorBD(String[][] listaProcessadorBD) 
+    {
+        CPUBD.listaProcessadorBD = listaProcessadorBD;
     }
-    public CPUBD(){
-        Connection c;
-        c = ConexaoBD.getConexao();
+
+    public CPUBD()
+    {
+        Connection c = ConexaoBD.getConexao();
+
         PreparedStatement ps = null;
         ResultSet rs = null;
         String query = null;
+
         query = "SELECT nome, cores, clock FROM Processador;";
-        try {
+
+        try 
+        {
             int i = 0;
+
             ps = c.prepareStatement(query);
             rs = ps.executeQuery();
-            while(rs.next()){
-                int j=0;
-                CPU[i][j] = rs.getString("nome");
+
+            while(rs.next())
+            {
+                int j = 0;
+
+                listaProcessadorBD[i][j] = rs.getString("nome");
                 ++j;
-                CPU[i][j] = rs.getString("cores");
+                listaProcessadorBD[i][j] = rs.getString("cores");
                 ++j;
-                CPU[i][j] = rs.getString("clock");
+                listaProcessadorBD[i][j] = rs.getString("clock");
                 ++i;
             }
-            setCPU(CPU);
-        } catch (SQLException e) {
+
+            setListaProcessadorBD(listaProcessadorBD);
+        } 
+        catch(SQLException e) 
+        {
             System.exit(0);
-        } finally {
+        }
+        finally 
+        {
             // Conexao.fecharConexao(c, ps, rs);
         }
     }
-    public String[] getMinCPUBD(String recCPU[]) {
+
+    public String[] getRecomendacaoMinimaCPU(String dadoRecomendadoCPU[]) 
+    {
+        int j = 0;
+
+        for(int i = 0; i < 15; ++i)
+        {
+            if(Float.parseFloat(listaProcessadorBD[i][1]) * Float.parseFloat(listaProcessadorBD[i][2]) >= Float.parseFloat(dadoRecomendadoCPU[0]) * Float.parseFloat(dadoRecomendadoCPU[1]))
+            {
+                if(Float.parseFloat(listaProcessadorBD[i][1]) * Float.parseFloat(listaProcessadorBD[i][2]) < Float.parseFloat(dadoRecomendadoCPU[2]) * Float.parseFloat(dadoRecomendadoCPU[3]))
+                {
+                    ++j;
+                }
+            }
+        }
+
+        String nomeCPUsCompativeis[] = new String[j];
+        j = 0;
+
+        for(int i = 0; i < 15; ++i)
+        {
+            if(Float.parseFloat(listaProcessadorBD[i][1]) * Float.parseFloat(listaProcessadorBD[i][2]) >= Float.parseFloat(dadoRecomendadoCPU[0]) * Float.parseFloat(dadoRecomendadoCPU[1]))
+            {
+                if(Float.parseFloat(listaProcessadorBD[i][1]) * Float.parseFloat(listaProcessadorBD[i][2]) < Float.parseFloat(dadoRecomendadoCPU[2]) * Float.parseFloat(dadoRecomendadoCPU[3]))
+                {
+                    nomeCPUsCompativeis[j] = listaProcessadorBD[i][0];
+                    ++j;
+                }
+            }
+        }
+        return nomeCPUsCompativeis;
+    }
+
+    public String[] getRecomendacaoRecomendadaCPU(String dadoRecomendadoCPU[]) 
+    {
+        int j = 0;
+        for(int i = 0; i < 15; ++i)
+        {
+            if(Float.parseFloat(listaProcessadorBD[i][1]) * Float.parseFloat(listaProcessadorBD[i][2]) >= Float.parseFloat(dadoRecomendadoCPU[2]) * Float.parseFloat(dadoRecomendadoCPU[3]))
+            {
+                ++j;
+            }
+        }
+
+        String nomeCPUsCompativeis[] = new String[j];
+        j = 0;
+
+        for(int i = 0; i < 15; ++i)
+        {
+            if(Float.parseFloat(listaProcessadorBD[i][1]) * Float.parseFloat(listaProcessadorBD[i][2]) >= Float.parseFloat(dadoRecomendadoCPU[2]) * Float.parseFloat(dadoRecomendadoCPU[3]))
+            {
+                nomeCPUsCompativeis[j] = listaProcessadorBD[i][0];
+                ++j;
+            }
+        }
+
+        return nomeCPUsCompativeis;
+    }
+
+    public String[] getGeralMinCPUBD(float resultCPUMin, float resultCPURec) 
+    {
         int j = 0;
         for(int i = 0; i < 15; ++i){
-            if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) >= Float.parseFloat(recCPU[0]) * Float.parseFloat(recCPU[1])){
-                if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) < Float.parseFloat(recCPU[2]) * Float.parseFloat(recCPU[3])){
+            if(Float.parseFloat(listaProcessadorBD[i][1]) * Float.parseFloat(listaProcessadorBD[i][2]) >= resultCPUMin)
+            {
+                if(Float.parseFloat(listaProcessadorBD[i][1]) * Float.parseFloat(listaProcessadorBD[i][2]) < resultCPURec)
+                {
                     ++j;
                 }
             }
         }
+
         String resultNomeCPU[] = new String[j];
         j = 0;
-        for(int i = 0; i < 15; ++i){
-            if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) >= Float.parseFloat(recCPU[0]) * Float.parseFloat(recCPU[1])){
-                if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) < Float.parseFloat(recCPU[2]) * Float.parseFloat(recCPU[3])){
-                    resultNomeCPU[j] = CPU[i][0];
+
+        for(int i = 0; i < 15; ++i)
+        {
+            if(Float.parseFloat(listaProcessadorBD[i][1]) * Float.parseFloat(listaProcessadorBD[i][2]) >= resultCPUMin)
+            {
+                if(Float.parseFloat(listaProcessadorBD[i][1]) * Float.parseFloat(listaProcessadorBD[i][2]) < resultCPURec)
+                {
+                    resultNomeCPU[j] = listaProcessadorBD[i][0];
                     ++j;
                 }
             }
         }
+
         return resultNomeCPU;
     }
-    public String[] getRecCPUBD(String recCPU[]) {
+
+    public String[] getGeralRecCPUBD(float resultCPU) 
+    {
         int j = 0;
-        for(int i = 0; i < 15; ++i){
-            if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) >= Float.parseFloat(recCPU[2]) * Float.parseFloat(recCPU[3])){
+        for(int i = 0; i < 15; ++i)
+        {
+            if(Float.parseFloat(listaProcessadorBD[i][1]) * Float.parseFloat(listaProcessadorBD[i][2]) >= resultCPU)
                 ++j;
-            }
         }
-        String resultNomeCPU[] = new String[j];
+
+        String nomeCPUsCompativeis[] = new String[j];
         j = 0;
-        for(int i = 0; i < 15; ++i){
-            if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) >= Float.parseFloat(recCPU[2]) * Float.parseFloat(recCPU[3])){
-                resultNomeCPU[j] = CPU[i][0];
+
+        for(int i = 0; i < 15; ++i)
+        {
+            if(Float.parseFloat(listaProcessadorBD[i][1]) * Float.parseFloat(listaProcessadorBD[i][2]) >= resultCPU)
+            {
+                nomeCPUsCompativeis[j] = listaProcessadorBD[i][0];
                 ++j;
             }
         }
-        return resultNomeCPU;
-    }
-    public String[] getGeralMinCPUBD(float resultCPUMin, float resultCPURec) {
-        int j = 0;
-        for(int i = 0; i < 15; ++i){
-            if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) >= resultCPUMin){
-                if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) < resultCPURec){
-                    ++j;
-                }
-            }
-        }
-        String resultNomeCPU[] = new String[j];
-        j = 0;
-        for(int i = 0; i < 15; ++i){
-            if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) >= resultCPUMin){
-                if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) < resultCPURec){
-                    resultNomeCPU[j] = CPU[i][0];
-                    ++j;
-                }
-            }
-        }
-        return resultNomeCPU;
-    }
-    public String[] getGeralRecCPUBD(float resultCPU) {
-        int j = 0;
-        for(int i = 0; i < 15; ++i){
-            if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) >= resultCPU){
-                ++j;
-            }
-        }
-        String resultNomeCPU[] = new String[j];
-        j = 0;
-        for(int i = 0; i < 15; ++i){
-            if(Float.parseFloat(CPU[i][1]) * Float.parseFloat(CPU[i][2]) >= resultCPU){
-                resultNomeCPU[j] = CPU[i][0];
-                ++j;
-            }
-        }
-        return resultNomeCPU;
+        return nomeCPUsCompativeis;
     }
 }
