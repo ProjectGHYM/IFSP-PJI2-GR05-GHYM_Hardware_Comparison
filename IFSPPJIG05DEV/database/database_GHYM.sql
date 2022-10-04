@@ -242,15 +242,14 @@ insert into Software (cod_soft, id_recomendacaoram, id_recomendacaogpu, id_recom
 (19, 1, 10, 1, 7, 'Geforce Experience'),
 (20, 1, 3, 1, 6, 'Office 365');
 
--- TELA DE COMPARAÇÃO DE CPU
+-- EXEMPLO DE COMPARAÇÃO DE CPU
 SELECT * FROM Processador WHERE cod_cpu = 1;
 SELECT * FROM Processador WHERE cod_cpu = 2;
 
--- TELA DE COMPARAÇÃO DE GPU
+-- EXEMPLO DE COMPARAÇÃO DE GPU
 SELECT * FROM GPU WHERE cod_gpu = 1;
 SELECT * FROM GPU WHERE cod_gpu = 2;
 
--- EXEMPLO DE SOFTWARE PARA RECOMENDAÇÃO: GOD OF WAR
 -- TELA DE RECOMENDAÇÃO DE UM SOFTWARE ESPECIFICO
 CREATE VIEW rec_soft AS
 SELECT cod_soft, nome_soft, capacidademin, coremin, c.clockmin AS clockmin_cpu, g.clockmin AS clockmin_gpu, vrammin, capacidaderec, corerec, c.clockrec AS clockrec_cpu, g.clockrec AS clockrec_gpu, vramrec
@@ -262,46 +261,8 @@ ON id_recomendacaocpu = cod_reccpu
 INNER JOIN RecomendacaoGpu g
 ON id_recomendacaogpu = cod_recgpu;
 
--- TELAS DE HARDWARES PARA UMA CONFIGURAÇÃO ESPECÍFICA
--- EXEMPLO DE RECOMENDAÇÃO: REQUISITOS MÍNIMOS PARA GOD OF WAR
-
--- CONSULTA SEM WHERE: MEMÓRIAS QUE SE ENCAIXAM NA RECOMENDAÇÃO MÍNIMA DO EXEMPLO EM ORDEM CRESCENTE DE CAPACIDADE EM GBS
-SELECT m.nome AS marca, r.nome AS memoria_ram, capacidade, frequencia, tipo, preco  
-FROM RAM r
-INNER JOIN Marca m ON m.cod_marca = r.id_marca
-INNER JOIN RecomendacaoRam ON capacidade >= capacidademin
-INNER JOIN Software ON id_recomendacaoram = cod_recram and cod_soft = 1
-ORDER BY capacidade ASC;
-
--- CONSULTA COM WHERE: MEMÓRIAS QUE SE ENCAIXAM NA RECOMENDAÇÃO MÍNIMA DO EXEMPLO EM ORDEM CRESCENTE DE CAPACIDADE EM GBS
-CREATE VIEW recmin_ram AS
-SELECT m.nome AS marca, r.nome AS memoria_ram, capacidade, frequencia, tipo, preco  
-FROM RAM r
-INNER JOIN Marca m
-ON cod_marca = id_marca
-ORDER BY capacidade ASC;
-
--- PROCESSADORES QUE SE ENCAIXAM NA RECOMENDAÇÃO MÍNIMA DO EXEMPLO EM ORDEM CRESCENTE DE CORES
-CREATE VIEW recmin_cpu AS
-SELECT m.nome AS marca, p.nome AS processador, cores, threads, clock, turbo, mark, TDP, arquitetura, preco  
-FROM Processador p
-INNER JOIN Marca m
-ON cod_marca = id_marca
-ORDER BY cores ASC;
-
--- PLACAS DE VÍDEO QUE SE ENCAIXAM NA RECOMENDAÇÃO MÍNIMA DO EXEMPLO EM ORDEM CRESCENTE DE VRAM EM GBS
-CREATE VIEW recmin_gpu AS
-SELECT m.nome AS marca, g.nome AS gpu, vram, clock, mark, TDP, preco  
-FROM GPU g
-INNER JOIN Marca m
-ON cod_marca = id_marca
-ORDER BY vram ASC;
-
--- TELAS DE HARDWARES PARA UMA CONFIGURAÇÃO ESPECÍFICA
--- EXEMPLO DE MÚLTIPLAS ESCOLHAS DE SOFTWARE CONTENDO TODAS AS RECOMENDAÇÕES
+-- TELAS DE REQUISITOS PARA UMA CONFIGURAÇÃO ESPECÍFICA
 -- UTILIZAÇÃO DA FUNÇÃO MAX PARA ATENDER AS REQUISIÇÕES FEITAS
--- POR EXEMPLO: UM USUÁRIO ESCOLHE O CHROME E O GOW, SENDO ASSIM, APARECERÁ A RECOMENDAÇÃO MÍNIMA QUE MAIS EXIGE HARDWARE, POIS PRECISARÁ ATENDER TODOS OS SOFTWARES
-
 -- CONFIGURAÇÃO MÍNIMA DE SOFTWARES ESCOLHIDOS
 CREATE OR REPLACE VIEW recmin_softs AS
 SELECT cod_soft, capacidademin, coremin, vrammin
@@ -314,7 +275,7 @@ INNER JOIN RecomendacaoGpu g
 ON id_recomendacaogpu = cod_recgpu;
 
 -- CONFIGURAÇÃO RECOMENDADA DE SOFTWARES ESCOLHIDOS
-CREATE OR REPLACE VIEW recs_softs AS
+CREATE OR REPLACE VIEW recrec_softs AS
 SELECT cod_soft, capacidaderec, corerec, vramrec
 FROM Software
 INNER JOIN RecomendacaoRam
@@ -324,22 +285,49 @@ ON id_recomendacaocpu = cod_reccpu
 INNER JOIN RecomendacaoGpu g
 ON id_recomendacaogpu = cod_recgpu;
 
+-- TELAS DE HARDWARES PARA UMA CONFIGURAÇÃO ESPECÍFICA
+-- MEMÓRIAS QUE SE ENCAIXAM EM UMA DETERMINADA RECOMENDAÇÃO DO SOFTWARE ESCOLHIDO EM ORDEM CRESCENTE DE CAPACIDADE EM GBS
+CREATE VIEW rec_ram AS
+SELECT m.nome AS marca, r.nome AS memoria_ram, capacidade, frequencia, tipo, preco  
+FROM RAM r
+INNER JOIN Marca m
+ON cod_marca = id_marca
+ORDER BY capacidade ASC;
+
+-- PROCESSADORES QUE SE ENCAIXAM EM UMA DETERMINADA RECOMENDAÇÃO DO SOFTWARE ESCOLHIDO EM ORDEM CRESCENTE DE CORES
+CREATE VIEW rec_cpu AS
+SELECT m.nome AS marca, p.nome AS processador, cores, threads, clock, turbo, mark, TDP, arquitetura, preco  
+FROM Processador p
+INNER JOIN Marca m
+ON cod_marca = id_marca
+ORDER BY cores ASC;
+
+-- PLACAS DE VÍDEO QUE SE ENCAIXAM EM UMA DETERMINADA RECOMENDAÇÃO DO SOFTWARE ESCOLHIDO EM ORDEM CRESCENTE DE VRAM EM GBS
+CREATE VIEW rec_gpu AS
+SELECT m.nome AS marca, g.nome AS gpu, vram, clock, mark, TDP, preco  
+FROM GPU g
+INNER JOIN Marca m
+ON cod_marca = id_marca
+ORDER BY vram ASC;
+
+-- EXEMPLOS PARA USO NO SOFTWARE JAVA
 SELECT * FROM rec_soft
 WHERE cod_soft IN (1);
 
-SELECT * FROM recmin_ram
+SELECT * FROM rec_ram
 WHERE capacidade >= 4;
 
-SELECT * FROM recmin_cpu
+SELECT * FROM rec_cpu
 WHERE cores >= 4 and clock >= 3.1;
 
-SELECT * FROM recmin_gpu
+SELECT * FROM rec_gpu
 WHERE vram >= 8;
 
-SELECT max(capacidademin), max(coremin), max(vrammin)
-FROM recmin_softs
-WHERE cod_soft IN (1,3,4);
+SELECT AVG(capacidaderec) AS media_RAM, AVG(corerec) AS media_Core, AVG(vramrec) AS media_VRAM
+FROM recrec_softs;
 
-SELECT max(capacidaderec), max(corerec), max(vramrec)
-FROM recs_softs
-WHERE cod_soft IN (1,3,4);
+SELECT max(capacidademin) AS capacidade_min_RAM, max(coremin) AS core_min_CPU, max(vrammin) AS vram_min_GPU
+FROM recmin_softs;
+
+SELECT max(capacidaderec) AS capacidade_rec_RAM, max(corerec) AS core_rec_CPU, max(vramrec) AS vram_rec_GPU
+FROM recrec_softs;
