@@ -2,77 +2,55 @@ package ModelDAO;
 
 import java.util.ArrayList;
 
-public class OrganizaBD 
-{
-    static float recMinSofts[][];
+public class OrganizaBD {
+    static float requisitoSoft[][];
 
-    public static float[][] getRecMinSofts() 
-    {
-        return recMinSofts;
+    public static float[][] getrequisitoSoft() {
+        return requisitoSoft;
     }
 
-    public static void setRecMinSofts(float recMinSofts[][]) 
-    {
-        OrganizaBD.recMinSofts = recMinSofts;
+    public static void setrequisitoSoft(float requisitoSoft[][]) {
+        OrganizaBD.requisitoSoft = requisitoSoft;
     }
 
-    public OrganizaBD(ArrayList<String> escsoft)
-    {
-        recMinSofts = new float[escsoft.size()][6];
-        OrganizaBD.setRecMinSofts(recMinSofts);
-    }
-    
-    public void juntaMin(String resultRecCPU[], String resultRecGPU[], String resultRecRAM[], byte cont)
-    {
-        recMinSofts[cont][0] = Float.parseFloat(resultRecCPU[0]) * Float.parseFloat(resultRecCPU[1]);
-        recMinSofts[cont][1] = Float.parseFloat(resultRecCPU[2]) * Float.parseFloat(resultRecCPU[3]);
-        recMinSofts[cont][2] = Float.parseFloat(resultRecGPU[0]) * Float.parseFloat(resultRecGPU[1]);
-        recMinSofts[cont][3] = Float.parseFloat(resultRecGPU[2]) * Float.parseFloat(resultRecGPU[3]);
-        recMinSofts[cont][4] = Float.parseFloat(resultRecRAM[0]);
-        recMinSofts[cont][5] = Float.parseFloat(resultRecRAM[1]);
-        OrganizaBD.setRecMinSofts(recMinSofts);
+    public OrganizaBD(ArrayList<String> softwareEscolhido) {
+        requisitoSoft = new float[softwareEscolhido.size()][6];
+        OrganizaBD.setrequisitoSoft(requisitoSoft);
     }
 
-    public float CPUMin()
-    {       
-        return RecomendacaoMultiplosSoftwares(0);   //Equivalente no array
-    }
-    
-    public float CPURec()
-    {
-        return RecomendacaoMultiplosSoftwares(1);   //Equivalente no array
-    }
-    
-    public float GPUMin()
-    {
-       return RecomendacaoMultiplosSoftwares(2);    //Equivalente no array
-    }
-    
-    public float GPURec()
-    {
-        return RecomendacaoMultiplosSoftwares(3);    //Equivalente no array
-    }
-    
-    public float RAMMin()
-    {
-        return RecomendacaoMultiplosSoftwares(4);    //Equivalente no array
+    public void juntaRequisitos(String requisitoCPU[], String requisitoGPU[], String requisitoRAM[],
+            byte numeroDeSoftware) {
+        requisitoSoft[numeroDeSoftware][0] = Float.parseFloat(requisitoCPU[0]) * Float.parseFloat(requisitoCPU[1]);
+        requisitoSoft[numeroDeSoftware][1] = Float.parseFloat(requisitoCPU[2]) * Float.parseFloat(requisitoCPU[3]);
+        requisitoSoft[numeroDeSoftware][2] = Float.parseFloat(requisitoGPU[0]) * Float.parseFloat(requisitoGPU[1]);
+        requisitoSoft[numeroDeSoftware][3] = Float.parseFloat(requisitoGPU[2]) * Float.parseFloat(requisitoGPU[3]);
+        requisitoSoft[numeroDeSoftware][4] = Float.parseFloat(requisitoRAM[0]);
+        requisitoSoft[numeroDeSoftware][5] = Float.parseFloat(requisitoRAM[1]);
+        OrganizaBD.setrequisitoSoft(requisitoSoft);
     }
 
-    public float RAMRec()
-    {
-        return RecomendacaoMultiplosSoftwares(5);    //Equivalente no array
+    public float[] cpuRequisito() {
+        return RecomendacaoMultiplosSoftwares(0, 1); // Equivalente no array
     }
 
-    public float RecomendacaoMultiplosSoftwares(int posicaoVetor)
-    {
-        float maior = 0;
+    public float[] gpuRequisito() {
+        return RecomendacaoMultiplosSoftwares(2, 3); // Equivalente no array
+    }
 
-        for(byte i = 0; i < recMinSofts.length; ++i)
-        {
-            if(recMinSofts[i][posicaoVetor] > maior)
-                maior = recMinSofts[i][posicaoVetor];
+    public float[] ramRequisito() {
+        return RecomendacaoMultiplosSoftwares(4, 5); // Equivalente no array
+    }
+
+    public float[] RecomendacaoMultiplosSoftwares(int posicaoPrimeiroVetor, int posicaoSegundoVetor) {
+        float maiorRequisito[] = new float[2];
+
+        for (byte i = 0; i < requisitoSoft.length; ++i) {
+            if (requisitoSoft[i][posicaoPrimeiroVetor] > maiorRequisito[0])
+                maiorRequisito[0] = requisitoSoft[i][posicaoPrimeiroVetor];
+
+            if (requisitoSoft[i][posicaoSegundoVetor] > maiorRequisito[1])
+                maiorRequisito[1] = requisitoSoft[i][posicaoSegundoVetor];
         }
-        
-        return maior;
+        return maiorRequisito;
     }
 }

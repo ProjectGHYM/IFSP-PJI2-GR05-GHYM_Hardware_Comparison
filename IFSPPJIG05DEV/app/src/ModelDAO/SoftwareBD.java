@@ -2,51 +2,42 @@ package ModelDAO;
 
 import java.sql.*;
 
-public class SoftwareBD 
-{
-    static String nome_softs[] = new String[20];
+public class SoftwareBD {
+    static String listaSoftware[];
 
-    public String[] getNome_softs() 
-    {
-        return nome_softs;
+    public String[] getlistaSoftware() {
+        return listaSoftware;
     }
-    
-    public void setNome_softs(String[] nome_softs) 
-    {
-        SoftwareBD.nome_softs = nome_softs;
+
+    public void setlistaSoftware(String[] listaSoftware) {
+        SoftwareBD.listaSoftware = listaSoftware;
     }
-    
-    public void readSoftwareBD() 
-    {
+
+    public void readSoftwareBD() {
         Connection c;
         c = ConexaoBD.getConexao();
         SoftwareBD softbd = new SoftwareBD();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String query = null;
+        String query = "SELECT COUNT(nome_soft) AS NumeroSoftwares FROM Software;";
 
-        query = "SELECT nome_soft FROM Software;";
-
-        try
-        {
+        try {
             int i = 0;
             ps = c.prepareStatement(query);
             rs = ps.executeQuery();
-
-            while (rs.next())
-            {
-                nome_softs[i] = rs.getString("nome_soft");
+            rs.next();
+            listaSoftware = new String[Integer.parseInt(rs.getString("NumeroSoftwares"))];
+            query = "SELECT nome_soft AS Nome FROM Software;";
+            ps = c.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                listaSoftware[i] = rs.getString("Nome");
                 ++i;
             }
-
-            softbd.setNome_softs(nome_softs);
-        } 
-        catch (SQLException e)
-        {
+            softbd.setlistaSoftware(listaSoftware);
+        } catch (SQLException e) {
             System.exit(0);
-        }
-        finally 
-        {
+        } finally {
             // Conexao.fecharConexao(c, ps, rs);
         }
     }
