@@ -156,6 +156,7 @@ insert into Processador (cod_cpu, id_marca, nome, clock, turbo, cores, threads, 
 (99, 2, 'Athlon 240GE', 3.50, 3.50, 2, 4, 4551, 35, 'AM4', 169.99),
 (100, 2, 'Athlon 3000G', 3.50, 3.50, 2, 4, 4483, 35, 'AM4', 89.99);
 
+
 create table GPU(
 cod_gpu int NOT NULL,
 id_marca int NOT NULL,
