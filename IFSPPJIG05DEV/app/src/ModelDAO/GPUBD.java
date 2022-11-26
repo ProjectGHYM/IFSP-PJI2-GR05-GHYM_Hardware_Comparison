@@ -2,38 +2,36 @@ package ModelDAO;
 
 import java.sql.*;
 
-public class GPUBD 
-{
-    static String listaGPUBD[][] = new String[15][3];
-    
-    public static String[][] getGPU() 
-    {
+public class GPUBD {
+    static String listaGPUBD[][];
+
+    public static String[][] getGPU() {
         return listaGPUBD;
     }
 
-    public static void setGPU(String[][] listaGPUBD) 
-    {
+    public static void setGPU(String[][] listaGPUBD) {
         GPUBD.listaGPUBD = listaGPUBD;
     }
 
-    public GPUBD()
-    {
+    public GPUBD() {
         Connection c = ConexaoBD.getConexao();
 
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String query = "SELECT nome, clock, VRAM FROM listaGPUBD;";
+        String query = "SELECT COUNT(nome) AS NumeroGPU FROM GPU;";
 
-        try 
-        {
+        try {
             int i = 0;
 
             ps = c.prepareStatement(query);
             rs = ps.executeQuery();
-
-            while(rs.next())
-            {
-                int j=0;
+            rs.next();
+            listaGPUBD = new String[Integer.parseInt(rs.getString("NumeroGPU"))][3];
+            query = "SELECT nome, clock, VRAM FROM GPU;";
+            ps = c.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int j = 0;
 
                 listaGPUBD[i][j] = rs.getString("nome");
                 ++j;
@@ -42,41 +40,27 @@ public class GPUBD
                 listaGPUBD[i][j] = rs.getString("VRAM");
                 ++i;
             }
-
             setGPU(listaGPUBD);
-        }
-        catch(SQLException e) 
-        {
+        } catch (SQLException e) {
             System.exit(0);
-        } 
-        finally
-        {
+        } finally {
             // Conexao.fecharConexao(c, ps, rs);
         }
     }
 
-    public String[] getMinimaGPU(String dadoRecomendadoGPU[]) 
-    {
+    public String[] getMinimaGPUBD(float gpuRequisitos[]) {
         int j = 0;
-
-        for(int i = 0; i < 15; ++i)
-        {
-            if(Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= Float.parseFloat(dadoRecomendadoGPU[0]) * Float.parseFloat(dadoRecomendadoGPU[1]))
-            {
-                if(Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) < Float.parseFloat(dadoRecomendadoGPU[2]) * Float.parseFloat(dadoRecomendadoGPU[3]))
+        for (int i = 0; i < 15; ++i) {
+            if (Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= gpuRequisitos[0]) {
+                if (Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) < gpuRequisitos[1])
                     ++j;
             }
         }
-
         String nomeGPUCompativel[] = new String[j];
         j = 0;
-
-        for(int i = 0; i < 15; ++i)
-        {
-            if(Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= Float.parseFloat(dadoRecomendadoGPU[0]) * Float.parseFloat(dadoRecomendadoGPU[1]))
-            {
-                if(Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) < Float.parseFloat(dadoRecomendadoGPU[2]) * Float.parseFloat(dadoRecomendadoGPU[3]))
-                {
+        for (int i = 0; i < 15; ++i) {
+            if (Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= gpuRequisitos[0]) {
+                if (Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) < gpuRequisitos[1]) {
                     nomeGPUCompativel[j] = listaGPUBD[i][0] + " " + listaGPUBD[i][2] + "GB";
                     ++j;
                 }
@@ -85,74 +69,19 @@ public class GPUBD
         return nomeGPUCompativel;
     }
 
-    public String[] getRecomendadaGPU(String dadoRecomendadoGPU[]) 
-    {
+    public String[] getRecomendadaGPUBD(float gpuRequisitos[]) {
         int j = 0;
 
-        for(int i = 0; i < 15; ++i)
-        {
-            if(Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= Float.parseFloat(dadoRecomendadoGPU[2]) * Float.parseFloat(dadoRecomendadoGPU[3]))
-                ++j;
-        }
-        
-        String nomeGPUCompativel[] = new String[j];
-        j = 0;
-
-        for(int i = 0; i < 15; ++i)
-        {
-            if(Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= Float.parseFloat(dadoRecomendadoGPU[2]) * Float.parseFloat(dadoRecomendadoGPU[3]))
-            {
-                nomeGPUCompativel[j] = listaGPUBD[i][0] + " " + listaGPUBD[i][2] + "GB";
-                ++j;
-            }
-        }
-        return nomeGPUCompativel;
-    }
-
-    public String[] getGeralMinGPUBD(float resultGPUMin, float resultGPURec) 
-    {
-        int j = 0;
-        for(int i = 0; i < 15; ++i)
-        {
-            if(Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= resultGPUMin)
-            {
-                if(Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) < resultGPURec)
-                    ++j;
-            }
-        }
-        String nomeGPUCompativel[] = new String[j];
-        j = 0;
-        for(int i = 0; i < 15; ++i)
-        {
-            if(Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= resultGPUMin)
-            {
-                if(Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) < resultGPURec)
-                {
-                    nomeGPUCompativel[j] = listaGPUBD[i][0] + " " + listaGPUBD[i][2] + "GB";
-                    ++j;
-                }
-            }
-        }
-        return nomeGPUCompativel;
-    }
-
-    public String[] getGeralRecGPUBD(float resultGPU) 
-    {
-        int j = 0;
-
-        for(int i = 0; i < 15; ++i)
-        {
-            if(Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= resultGPU)
+        for (int i = 0; i < 15; ++i) {
+            if (Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= gpuRequisitos[1])
                 ++j;
         }
 
         String nomeGPUCompativel[] = new String[j];
         j = 0;
 
-        for(int i = 0; i < 15; ++i)
-        {
-            if(Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= resultGPU)
-            {
+        for (int i = 0; i < 15; ++i) {
+            if (Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= gpuRequisitos[1]) {
                 nomeGPUCompativel[j] = listaGPUBD[i][0] + " " + listaGPUBD[i][2] + "GB";
                 ++j;
             }
