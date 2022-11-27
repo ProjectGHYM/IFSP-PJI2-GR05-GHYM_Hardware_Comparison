@@ -7,7 +7,7 @@ public class RecomendacaoRAM
 
     public static RecomendacaoRAM achaMaiorRequisito(RecomendacaoRAM opcao1, RecomendacaoRAM opcao2)
     {
-        if(opcao1.getCapacidadeMin() >= opcao2.getCapacidadeMin() || opcao1.getCapacidadeMax() >= opcao2.getCapacidadeMax())
+        if(opcao1.getCapacidadeMin() >= opcao2.getCapacidadeMin() && opcao1.getCapacidadeMax() >= opcao2.getCapacidadeMax())
         {
             return opcao1;
         }

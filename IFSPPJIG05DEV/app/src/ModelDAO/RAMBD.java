@@ -13,8 +13,7 @@ public class RAMBD
     public RAMBD() 
     {
         RAMBD.achaTamanhoLista();
-        String query = "SELECT r.cod_ram AS id, r.nome, m.nome AS marca, r.frequencia, r.capacidade, r.tipo, r.preco " +
-        "FROM ram AS r JOIN marca AS m ON r.id_marca = m.cod_marca;";
+        String query = "SELECT * FROM lista_ram";
         
         try(
             Connection c = ConexaoBD.getConexao();
@@ -29,7 +28,33 @@ public class RAMBD
                  rs.getInt("capacidade"), rs.getString("tipo"), rs.getFloat("preco"));            
                 i++;
             }
-            setListaRAM(listaRAM);
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("Erro BD da RAM: " + e);
+            System.exit(0);
+        }
+    }
+
+    public static void inicializar()
+    {
+        //Método que caso não seja inicializado nenhuma variável deste tipo preenche a lista com os componentes
+        RAMBD.achaTamanhoLista();
+        String query = "SELECT * FROM lista_ram";
+        
+        try(
+            Connection c = ConexaoBD.getConexao();
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ) 
+        {
+            int i = 0;
+            while (rs.next()) 
+            {
+                listaRAM[i] = new RAM(rs.getInt("id"), rs.getString("nome"), rs.getString("marca"), rs.getInt("frequencia"),
+                 rs.getInt("capacidade"), rs.getString("tipo"), rs.getFloat("preco"));            
+                i++;
+            }
         } 
         catch (SQLException e) 
         {
@@ -53,18 +78,8 @@ public class RAMBD
         } 
         catch (SQLException e) 
         {
-            System.out.println("Erro BD da RAM: " + e);
+            System.out.println("Erro BD da RAM na contagem: " + e);
             System.exit(0);
         }
-    }
-
-    public static RAM[] getListaRAM() 
-    {
-        return listaRAM;
-    }
-
-    public static void setListaRAM(RAM[] listaRAM) 
-    {
-        RAMBD.listaRAM = listaRAM;
     }
 }

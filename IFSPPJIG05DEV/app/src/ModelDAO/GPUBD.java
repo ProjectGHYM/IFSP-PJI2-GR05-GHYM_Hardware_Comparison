@@ -13,8 +13,7 @@ public class GPUBD
     public GPUBD() 
     {
         GPUBD.achaTamanhoLista();
-        String query = "SELECT g.cod_gpu AS id, g.nome, m.nome AS marca, g.clock, g.VRAM AS vRAM, g.mark, g.TDP AS tDP, g.preco " + 
-            "FROM gpu AS g JOIN marca AS m ON g.id_marca = m.cod_marca;";
+        String query = "SELECT * FROM lista_gpu;";
         
         try(
             Connection c = ConexaoBD.getConexao();
@@ -26,11 +25,10 @@ public class GPUBD
             while (rs.next()) 
             {
                 listaGPU[i] = new GPU(rs.getInt("id"), rs.getString("nome"), rs.getString("marca"), rs.getInt("clock"),
-                 rs.getInt("vRAM"), rs.getInt("mark"), rs.getInt("tDP"), rs.getFloat("preco"));
+                 rs.getInt("VRAM"), rs.getInt("mark"), rs.getInt("TDP"), rs.getFloat("preco"));
                 
                 i++;
             }
-            setListaGPU(listaGPU);
         } 
         catch (SQLException e) 
         {
@@ -39,6 +37,34 @@ public class GPUBD
         }
     }
 
+    public static void inicializar()
+    {
+        //Método que caso não seja inicializado nenhuma variável deste tipo preenche a lista com os componentes
+        GPUBD.achaTamanhoLista();
+        String query = "SELECT * FROM lista_gpu;";
+        
+        try(
+            Connection c = ConexaoBD.getConexao();
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ) 
+        {
+            int i = 0;
+            while (rs.next()) 
+            {
+                listaGPU[i] = new GPU(rs.getInt("id"), rs.getString("nome"), rs.getString("marca"), rs.getInt("clock"),
+                 rs.getInt("VRAM"), rs.getInt("mark"), rs.getInt("TDP"), rs.getFloat("preco"));
+                
+                i++;
+            }
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("Erro BD da GPU: " + e);
+            System.exit(0);
+        }
+    }
+    
     private static void achaTamanhoLista()
     {
         String query = "SELECT COUNT(nome) AS NumeroGPU FROM GPU;";
@@ -53,18 +79,8 @@ public class GPUBD
         } 
         catch (SQLException e) 
         {
-            System.out.println("Erro BD da GPU: " + e);
+            System.out.println("Erro BD da GPU na contagem: " + e);
             System.exit(0);
         }
-    }
-    
-    public static GPU[] getListaGPU() 
-    {
-        return listaGPU;
-    }
-
-    public static void setListaGPU(GPU[] listaGPU) 
-    {
-        GPUBD.listaGPU = listaGPU;
     }
 }

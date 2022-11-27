@@ -494,7 +494,7 @@ CREATE FUNCTION slug_pags(url text)
         SET slug = REPLACE(slug, '°', '');
         SET slug = REPLACE(slug, '/', '');
         SET slug = REPLACE(slug, '\\', '');
-        SET slug = REPLACE(slug, '\'', '');
+        SET slug = REPLACE(slug, '\', '');
         SET slug = REPLACE(slug, '?', '');
         SET slug = REPLACE(slug, '!', '');
         SET slug = REPLACE(slug, 'ã', 'a');
@@ -536,7 +536,7 @@ SELECT * FROM GPU WHERE cod_gpu = 2;
 
 -- LISTA DE PROCESSADORES POR ORDEM DE FORÇA DE PROCESSAMENTO (MENOR PARA O MAIOR)
 CREATE OR REPLACE VIEW lista_cpu AS
-SELECT p.cod_cpu AS id, p.nome, m.nome AS marca, p.clock, p.turbo, p.cores, p.threads, p.mark, p.TDP AS TDP, p.arquitetura, p.preco 
+SELECT p.cod_cpu AS id, p.nome, m.nome AS marca, p.clock, p.turbo, p.cores, p.threads, p.mark, p.TDP, p.arquitetura, p.preco 
 FROM Processador p 
 JOIN Marca m 
 ON p.id_marca = m.cod_marca
@@ -552,7 +552,7 @@ ORDER BY capacidade ASC;
 
 -- LISTA DE GPU POR ORDEM DE FORÇA DE PROCESSAMENTO GRÁFICO (MENOR PARA O MAIOR)
 CREATE OR REPLACE VIEW lista_gpu AS
-SELECT g.cod_gpu AS id, g.nome, m.nome AS marca, g.clock, g.VRAM, g.mark, g.TDP AS TDP, g.preco 
+SELECT g.cod_gpu AS id, g.nome, m.nome AS marca, g.clock, g.VRAM, g.mark, g.TDP, g.preco 
 FROM Gpu g
 JOIN Marca m 
 ON g.id_marca = m.cod_marca

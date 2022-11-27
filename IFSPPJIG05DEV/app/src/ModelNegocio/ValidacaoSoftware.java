@@ -1,48 +1,24 @@
 package ModelNegocio;
 
-import javax.swing.JOptionPane;
 import ModelDAO.SoftwareBD;
 import ModelEntidade.Software;
-import View.Exibicao;
 
 public class ValidacaoSoftware 
 {
     private Software softwareAchado;
 
-    public byte procuraSoftwareNome(String nomeSoftware)
+    public boolean procuraSoftwareNome(String nomeSoftware)
 	{
-        Exibicao exibe = new Exibicao();
-        if(exibe.confirmaSoftware(nomeSoftware) == JOptionPane.YES_OPTION)
+        for (byte i = 0; i < SoftwareBD.listaSoftware.length; ++i) 
         {
-            
-            boolean opcao = false;
-            for (byte i = 0; i < SoftwareBD.listaSoftware.length; ++i) 
+            if (nomeSoftware.equalsIgnoreCase(SoftwareBD.listaSoftware[i].getNome())) 
             {
-                if (nomeSoftware.equalsIgnoreCase(SoftwareBD.listaSoftware[i].getNome())) 
-                {
-                    nomeSoftware = SoftwareBD.listaSoftware[i].getNome();
-                    softwareAchado = SoftwareBD.listaSoftware[i];
-                    opcao = true;
-                      
-                }
-            }
-
-            if (opcao)
-            {
-                return 1;
-            }
-
-            else
-            {
-                exibe.softwareInexistente();
-                return 0;
+                softwareAchado = SoftwareBD.listaSoftware[i];
+                return true;
             }
         }
-        else
-        {
-            return 0;
-        }
 
+        return false;
 	}
 
     public Software getSoftwareAchado()

@@ -39,10 +39,43 @@ public class SoftwareBD
 
                 ++i;
             }
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("Erro BD do Software: " + e);
+            System.exit(0);
+        }
+    }
 
-            setListaSoftware(listaSoftware);
+    public static void inicializar()
+    {
+        //Método que caso não seja inicializado nenhuma variável deste tipo preenche a lista com os softwares
+        achaTamanhoLista();
+        String query = "SELECT * FROM requisitos_soft;";
 
-        } catch (SQLException e) 
+        try(
+            Connection c = ConexaoBD.getConexao();
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ) 
+        {
+            int i = 0;
+            
+            while (rs.next()) 
+            {
+                RecomendacaoRAM recRAM = new RecomendacaoRAM(rs.getInt("capacidademin"), rs.getInt("capacidaderec"));
+
+                RecomendacaoCPU recCPU = new RecomendacaoCPU(rs.getInt("coremin"), rs.getFloat("clockmin_cpu"), rs.getInt("corerec"), rs.getFloat("clockrec_cpu"));
+
+                RecomendacaoGPU recGPU = new RecomendacaoGPU(rs.getInt("vrammin"), rs.getInt("clockmin_gpu"), rs.getInt("vramrec"), rs.getInt("clockrec_gpu")); 
+
+                listaSoftware[i] = new Software(rs.getInt("cod_soft"), rs.getString("tipo"), rs.getString("nome_soft"),
+                recRAM, recCPU, recGPU);
+
+                ++i;
+            }
+        } 
+        catch (SQLException e) 
         {
             System.out.println("Erro BD do Software: " + e);
             System.exit(0);
@@ -64,18 +97,8 @@ public class SoftwareBD
         } 
         catch (SQLException e) 
         {
-            System.out.println("Erro BD do Software: " + e);
+            System.out.println("Erro BD do Software na contagem: " + e);
             System.exit(0);
         }
-    }
-
-    public Software[] getListaSoftware() 
-    {
-        return listaSoftware;
-    }
-
-    public void setListaSoftware(Software[] listaSoftware) 
-    {
-        SoftwareBD.listaSoftware = listaSoftware;
     }
 }

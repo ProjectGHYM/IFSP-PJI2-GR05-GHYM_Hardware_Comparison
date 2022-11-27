@@ -2,9 +2,6 @@ package Controller;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import javax.swing.JOptionPane;
-
 import View.*;
 import ModelDAO.*;
 import ModelEntidade.Requisito;
@@ -12,30 +9,42 @@ import ModelEntidade.Software;
 import ModelNegocio.AchaCompativel;
 import ModelNegocio.ValidacaoSoftware;
 
-public class AppGHYMInicializador {
+public class AppGHYMInicializador 
+{
 	public static void main(String[] args) 
 	{
 		boolean AplicacaoAtiva = true;
 		boolean lerSoftware = true;
 		String nomeSoftware;
-		Exibicao objexibir = new Exibicao();
-		SoftwareBD softBD = new SoftwareBD();
+		Exibicao exibir = new Exibicao(true);
+		SoftwareView mostra = new SoftwareView();
 		ValidacaoSoftware valida = new ValidacaoSoftware();
+		SoftwareBD.inicializar();
+		CPUBD.inicializar();
+		GPUBD.inicializar();
+		RAMBD.inicializar();
+
 		while (AplicacaoAtiva) 
 		{
 			SortedSet<Software> listaSoftwareEscolhido = new TreeSet<>();
 
 			while (lerSoftware) 
 			{
-				nomeSoftware = objexibir.leSoftware();
+				nomeSoftware = mostra.leSoftware();
 
-				if (valida.procuraSoftwareNome(nomeSoftware) == 1) // 1 significa que foi encontrado
+				if (valida.procuraSoftwareNome(nomeSoftware))
 				{
-					if(objexibir.ultimoTeste(valida.getSoftwareAchado()) == JOptionPane.YES_OPTION)
+					if(mostra.confirmaAdicaoListaSoftware(valida.getSoftwareAchado()))
+					{
 						listaSoftwareEscolhido.add(valida.getSoftwareAchado());
+					}
+				}
+				else
+				{
+					mostra.softwareInexistente();
 				}
 
-				lerSoftware = objexibir.continuaLendoSoftware(listaSoftwareEscolhido);
+				lerSoftware = mostra.continuaLendoSoftware(listaSoftwareEscolhido);
 			}
 
 			if (listaSoftwareEscolhido.size() < 0) 
@@ -43,22 +52,22 @@ public class AppGHYMInicializador {
 				System.exit(0);
 			}
 
-			CPUBD cpubd = new CPUBD();
-			GPUBD gpubd = new GPUBD();
-			RAMBD rambd = new RAMBD();
-			OrganizaBD org = new OrganizaBD(listaSoftwareEscolhido);
 			AchaCompativel achaRequisito = new AchaCompativel();
-			Requisito requisitoLista = org.definirRequisitoGeral();
+			Requisito requisitoLista = new Requisito(listaSoftwareEscolhido);
+
 			
-			objexibir.exibirConfiguraçãoMinima(listaSoftwareEscolhido, achaRequisito.achaCPUMinCompativeis(requisitoLista.getCpu()),
+			exibir.exibirConfiguraçãoMinima(listaSoftwareEscolhido, achaRequisito.achaCPUMinCompativeis(requisitoLista.getCpu()),
 			achaRequisito.achaGPUMinCompativeis(requisitoLista.getGpu()), achaRequisito.achaRAMMinCompativel(requisitoLista.getRam()));
 
-			objexibir.exibirConfiguraçãoRecomendada(listaSoftwareEscolhido, achaRequisito.achaCPUMaxCompativeis(requisitoLista.getCpu()),
+			exibir.exibirConfiguraçãoRecomendada(listaSoftwareEscolhido, achaRequisito.achaCPUMaxCompativeis(requisitoLista.getCpu()),
 			achaRequisito.achaGPUMaxCompativeis(requisitoLista.getGpu()), achaRequisito.achaRAMMaxCompativel(requisitoLista.getRam()));
 			
-			AplicacaoAtiva = objexibir.continuar();
+			AplicacaoAtiva = exibir.continuar();
 			if (AplicacaoAtiva)
+			{
 				lerSoftware = true;
+			}
+
 		}
 	}
 }

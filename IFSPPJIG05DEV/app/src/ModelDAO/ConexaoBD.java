@@ -1,6 +1,8 @@
 package ModelDAO;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class ConexaoBD 
 {
@@ -20,7 +22,8 @@ public class ConexaoBD
             Class.forName(driver);
             connection = DriverManager.getConnection(url, usuario, senha);
             return connection;
-        } catch (ClassNotFoundException | SQLException e) 
+        } 
+        catch (ClassNotFoundException | SQLException e) 
         {
             System.out.println("Erro de Conexão: " + e);
             System.exit(0);

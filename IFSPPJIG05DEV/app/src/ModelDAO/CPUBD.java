@@ -13,8 +13,7 @@ public class CPUBD
     public CPUBD() 
     {
         CPUBD.achaTamanhoLista();
-        String query = "SELECT p.cod_cpu AS id, p.nome, m.nome AS marca, p.clock, p.turbo, p.cores, p.threads, p.mark, p.TDP AS tDP, p.arquitetura, p.preco" 
-            + " FROM processador AS p JOIN marca AS m ON p.id_marca = m.cod_marca;";
+        String query = "SELECT * FROM lista_cpu;";
         
         try(
             Connection c = ConexaoBD.getConexao();
@@ -27,10 +26,37 @@ public class CPUBD
             {
                 listaProcessador[i] = new CPU(rs.getInt("id"), rs.getString("nome"), rs.getString("marca"), 
                 rs.getFloat("clock"), rs.getFloat("turbo"), rs.getInt("cores"), rs.getInt("threads"), 
-                rs.getInt("mark"), rs.getInt("tDP"), rs.getString("arquitetura"), rs.getFloat("preco"));
+                rs.getInt("mark"), rs.getInt("TDP"), rs.getString("arquitetura"), rs.getFloat("preco"));
                 ++i;
             }
-            setListaProcessador(listaProcessador);
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("Erro BD da CPU: " + e);
+            System.exit(0);
+        }
+    }
+
+    public static void inicializar()
+    {
+        //Método que caso não seja inicializado nenhuma variável deste tipo preenche a lista com os componentes
+        CPUBD.achaTamanhoLista();
+        String query = "SELECT * FROM lista_cpu;";
+        
+        try(
+            Connection c = ConexaoBD.getConexao();
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ) 
+        {
+            int i = 0; 
+            while (rs.next()) 
+            {
+                listaProcessador[i] = new CPU(rs.getInt("id"), rs.getString("nome"), rs.getString("marca"), 
+                rs.getFloat("clock"), rs.getFloat("turbo"), rs.getInt("cores"), rs.getInt("threads"), 
+                rs.getInt("mark"), rs.getInt("TDP"), rs.getString("arquitetura"), rs.getFloat("preco"));
+                ++i;
+            }
         } 
         catch (SQLException e) 
         {
@@ -53,18 +79,8 @@ public class CPUBD
         } 
         catch (SQLException e) 
         {
-            System.out.println("Erro BD da CPU: " + e);
+            System.out.println("Erro BD da CPU na contagem da lista: " + e);
             System.exit(0);
         }
-    }
-
-    public static CPU[] getListaProcessador() 
-    {
-        return listaProcessador;
-    }
-
-    public static void setListaProcessador(CPU[] listaProcessador) 
-    {
-        CPUBD.listaProcessador = listaProcessador;
     }
 }

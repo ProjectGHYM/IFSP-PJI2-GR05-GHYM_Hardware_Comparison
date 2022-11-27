@@ -8,7 +8,7 @@ public class Software implements Comparable<Software>
     private RecomendacaoRAM ram;
     private RecomendacaoCPU cpu;
     private RecomendacaoGPU gpu;
-    private String url;
+    private String localizacao;
     
     public Software(int id, String tipo, String nome, RecomendacaoRAM ram, RecomendacaoCPU cpu, RecomendacaoGPU gpu) 
     {
@@ -18,7 +18,7 @@ public class Software implements Comparable<Software>
         this.ram = ram;
         this.cpu = cpu;
         this.gpu = gpu;
-        url = nome.toLowerCase().replace(" ", "-").concat(".png");
+        localizacao = nome.toLowerCase().replace(" ", "-").concat(".png");
     }
 
     @Override
@@ -30,54 +30,73 @@ public class Software implements Comparable<Software>
             return 1;
     }  
 
-    public String getIcon(){
-        return url;
+    public String getlocalizacao()
+    {
+        return localizacao;
     }
-    public int getId() {
+
+    public void setLocalizacao(String localizacao)
+    {
+        this.localizacao = localizacao; 
+    }
+
+    public int getId() 
+    {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int id) 
+    {
         this.id = id;
     }
 
-    public String getTipo() {
+    public String getTipo() 
+    {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(String tipo) 
+    {
         this.tipo = tipo;
     }
 
-    public String getNome() {
+    public String getNome() 
+    {
         return nome;
     }
 
-    public void setNome(String nome) {
+    public void setNome(String nome) 
+    {
         this.nome = nome;
     }
 
-    public RecomendacaoRAM getRequisitoRam() {
+    public RecomendacaoRAM getRequisitoRam() 
+    {
         return ram;
     }
 
-    public void setRam(RecomendacaoRAM ram) {
+    public void setRam(RecomendacaoRAM ram) 
+    {
         this.ram = ram;
     }
 
-    public RecomendacaoCPU getRequisitoCpu() {
+    public RecomendacaoCPU getRequisitoCpu() 
+    {
         return cpu;
     }
 
-    public void setCpu(RecomendacaoCPU cpu) {
+    public void setCpu(RecomendacaoCPU cpu) 
+    {
         this.cpu = cpu;
     }
 
-    public RecomendacaoGPU getRequisitoGpu() {
+    public RecomendacaoGPU getRequisitoGpu() 
+    {
         return gpu;
     }
 
-    public void setGpu(RecomendacaoGPU gpu) {
+    public void setGpu(RecomendacaoGPU gpu) 
+    {
         this.gpu = gpu;
     }
 }
