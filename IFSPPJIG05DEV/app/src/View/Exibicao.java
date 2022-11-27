@@ -1,6 +1,9 @@
 package View;
 
 import java.util.SortedSet;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import ModelEntidade.CPU;
 import ModelEntidade.GPU;
@@ -119,6 +122,11 @@ public class Exibicao
 		}
 	}
 
+	public int ultimoTeste(Software soft)
+	{
+		Icon icone = new ImageIcon(getClass().getResource("cs-go.png"));
+		return JOptionPane.showConfirmDialog(null, "Software encontrado:\n" + soft.getNome() + "\nDeseja o adicionar em sua lista?", "", 0, JOptionPane.PLAIN_MESSAGE, icone);
+	}
 	public void exibirConfiguração(int cortaLinha, String telaFinal, String titulo, CPU listaNomeCPU[], GPU listaNomeGPU[], RAM listaNomeRAM[]) 
 	{
 		for (int i = 0; i < 15; ++i) 

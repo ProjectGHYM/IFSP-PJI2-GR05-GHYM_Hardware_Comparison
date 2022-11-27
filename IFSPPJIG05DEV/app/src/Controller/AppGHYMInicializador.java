@@ -3,6 +3,7 @@ package Controller;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.swing.JOptionPane;
 
 import View.*;
 import ModelDAO.*;
@@ -30,7 +31,8 @@ public class AppGHYMInicializador {
 
 				if (valida.procuraSoftwareNome(nomeSoftware) == 1) // 1 significa que foi encontrado
 				{
-					listaSoftwareEscolhido.add(valida.getSoftwareAchado());
+					if(objexibir.ultimoTeste(valida.getSoftwareAchado()) == JOptionPane.YES_OPTION)
+						listaSoftwareEscolhido.add(valida.getSoftwareAchado());
 				}
 
 				lerSoftware = objexibir.continuaLendoSoftware(listaSoftwareEscolhido);

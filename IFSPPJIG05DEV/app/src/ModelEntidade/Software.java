@@ -8,6 +8,7 @@ public class Software implements Comparable<Software>
     private RecomendacaoRAM ram;
     private RecomendacaoCPU cpu;
     private RecomendacaoGPU gpu;
+    private String url;
     
     public Software(int id, String tipo, String nome, RecomendacaoRAM ram, RecomendacaoCPU cpu, RecomendacaoGPU gpu) 
     {
@@ -17,6 +18,7 @@ public class Software implements Comparable<Software>
         this.ram = ram;
         this.cpu = cpu;
         this.gpu = gpu;
+        url = nome.toLowerCase().replace(" ", "-").concat(".png");
     }
 
     @Override
@@ -28,6 +30,9 @@ public class Software implements Comparable<Software>
             return 1;
     }  
 
+    public String getIcon(){
+        return url;
+    }
     public int getId() {
         return id;
     }
