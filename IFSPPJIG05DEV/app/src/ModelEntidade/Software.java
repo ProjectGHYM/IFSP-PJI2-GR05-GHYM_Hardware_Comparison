@@ -1,6 +1,6 @@
 package ModelEntidade;
 
-public class Software
+public class Software implements Comparable<Software>
 {
     private int id;
     private String tipo;
@@ -18,6 +18,15 @@ public class Software
         this.cpu = cpu;
         this.gpu = gpu;
     }
+
+    @Override
+    public int compareTo(Software o) 
+    {
+        if(this.id == o.getId())
+            return 0;
+        else
+            return 1;
+    }  
 
     public int getId() {
         return id;
@@ -65,5 +74,5 @@ public class Software
 
     public void setGpu(RecomendacaoGPU gpu) {
         this.gpu = gpu;
-    }  
+    }
 }

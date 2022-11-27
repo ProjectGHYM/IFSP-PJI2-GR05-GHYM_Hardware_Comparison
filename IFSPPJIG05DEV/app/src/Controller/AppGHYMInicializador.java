@@ -22,7 +22,7 @@ public class AppGHYMInicializador {
 		ValidacaoSoftware valida = new ValidacaoSoftware();
 		while (AplicacaoAtiva) 
 		{
-			SortedSet<Software> softwareEscolhido = new TreeSet<>();
+			SortedSet<Software> listaSoftwareEscolhido = new TreeSet<>();
 
 			while (lerSoftware) 
 			{
@@ -30,13 +30,13 @@ public class AppGHYMInicializador {
 
 				if (valida.procuraSoftwareNome(nomeSoftware) == 1) // 1 significa que foi encontrado
 				{
-					softwareEscolhido.add(SoftwareBD.listaSoftware[valida.indice]);
+					listaSoftwareEscolhido.add(valida.getSoftwareAchado());
 				}
 
-				lerSoftware = objexibir.continuaLendoSoftware(softwareEscolhido);
+				lerSoftware = objexibir.continuaLendoSoftware(listaSoftwareEscolhido);
 			}
 
-			if (softwareEscolhido.size() < 0) 
+			if (listaSoftwareEscolhido.size() < 0) 
 			{
 				System.exit(0);
 			}
@@ -44,15 +44,15 @@ public class AppGHYMInicializador {
 			CPUBD cpubd = new CPUBD();
 			GPUBD gpubd = new GPUBD();
 			RAMBD rambd = new RAMBD();
-			OrganizaBD org = new OrganizaBD(softwareEscolhido);
+			OrganizaBD org = new OrganizaBD(listaSoftwareEscolhido);
 			AchaCompativel achaRequisito = new AchaCompativel();
-			Requisito requisitos = org.definirRequisitoGeral();
+			Requisito requisitoLista = org.definirRequisitoGeral();
 			
-			objexibir.exibirConfiguraçãoMinima(softwareEscolhido, achaRequisito.achaCPUMinCompativeis(requisitos.getCpu()),
-			achaRequisito.achaGPUMinCompativeis(requisitos.getGpu()), achaRequisito.achaRAMMinCompativel(requisitos.getRam()));
+			objexibir.exibirConfiguraçãoMinima(listaSoftwareEscolhido, achaRequisito.achaCPUMinCompativeis(requisitoLista.getCpu()),
+			achaRequisito.achaGPUMinCompativeis(requisitoLista.getGpu()), achaRequisito.achaRAMMinCompativel(requisitoLista.getRam()));
 
-			objexibir.exibirConfiguraçãoRecomendada(softwareEscolhido, achaRequisito.achaCPUMaxCompativeis(requisitos.getCpu()),
-			achaRequisito.achaGPUMaxCompativeis(requisitos.getGpu()), achaRequisito.achaRAMMaxCompativel(requisitos.getRam()));
+			objexibir.exibirConfiguraçãoRecomendada(listaSoftwareEscolhido, achaRequisito.achaCPUMaxCompativeis(requisitoLista.getCpu()),
+			achaRequisito.achaGPUMaxCompativeis(requisitoLista.getGpu()), achaRequisito.achaRAMMaxCompativel(requisitoLista.getRam()));
 			
 			AplicacaoAtiva = objexibir.continuar();
 			if (AplicacaoAtiva)

@@ -7,7 +7,7 @@ import View.Exibicao;
 
 public class ValidacaoSoftware 
 {
-    public int indice;
+    private Software softwareAchado;
 
     public byte procuraSoftwareNome(String nomeSoftware)
 	{
@@ -21,8 +21,9 @@ public class ValidacaoSoftware
                 if (nomeSoftware.equalsIgnoreCase(SoftwareBD.listaSoftware[i].getNome())) 
                 {
                     nomeSoftware = SoftwareBD.listaSoftware[i].getNome();
+                    softwareAchado = SoftwareBD.listaSoftware[i];
                     opcao = true;
-                    indice = i;  
+                      
                 }
             }
 
@@ -43,4 +44,9 @@ public class ValidacaoSoftware
         }
 
 	}
+
+    public Software getSoftwareAchado()
+    {
+        return softwareAchado;
+    }
 }
