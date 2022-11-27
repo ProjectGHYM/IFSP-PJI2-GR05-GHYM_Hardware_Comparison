@@ -10,7 +10,8 @@ public class RAM
     private String tipo;
     private float preco;
     
-    public RAM(int id, String marca, String nome, int frequencia, int capacidade, String tipo, float preco) {
+    public RAM(int id, String nome, String marca, int frequencia, int capacidade, String tipo, float preco) 
+    {
         this.id = id;
         this.marca = marca;
         this.nome = nome;
@@ -19,6 +20,7 @@ public class RAM
         this.tipo = tipo;
         this.preco = preco;
     }
+
     public int getId() {
         return id;
     }

@@ -2,29 +2,44 @@ package ModelEntidade;
 
 public class RecomendacaoRAM
 {
-    private int id;
-    private int capacidade;
-    
-    public RecomendacaoRAM(int id, int capacidade) {
-        this.id = id;
-        this.capacidade = capacidade;
+    private int capacidadeMin;
+    private int capacidadeMax;
+
+    public static RecomendacaoRAM achaMaiorRequisito(RecomendacaoRAM opcao1, RecomendacaoRAM opcao2)
+    {
+        if(opcao1.getCapacidadeMin() >= opcao2.getCapacidadeMin() || opcao1.getCapacidadeMax() >= opcao2.getCapacidadeMax())
+        {
+            return opcao1;
+        }
+        else
+        {
+            return opcao2;
+        }      
     }
 
-    public int getId() {
-        return id;
+    public RecomendacaoRAM(int capacidadeMin, int capacidadeMax) 
+    {
+        this.capacidadeMin = capacidadeMin;
+        this.capacidadeMax = capacidadeMax;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getCapacidadeMin() 
+    {
+        return capacidadeMin;
     }
 
-    public int getCapacidade() {
-        return capacidade;
+    public void setCapacidadeMin(int capacidadeMin) 
+    {
+        this.capacidadeMin = capacidadeMin;
     }
 
-    public void setCapacidade(int capacidade) {
-        this.capacidade = capacidade;
+    public int getCapacidadeMax() 
+    {
+        return capacidadeMax;
     }
-    
-    
+
+    public void setCapacidadeMax(int capacidadeMax) 
+    {
+        this.capacidadeMax = capacidadeMax;
+    }
 }

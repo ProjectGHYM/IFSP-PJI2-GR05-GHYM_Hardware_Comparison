@@ -10,22 +10,21 @@ public class CPU
     private int threads;
     private int mark;
     private float turbo;
-    private int TDP;
+    private int tDP;
     private String arquitetura;
     private float preco;
-   
-    public CPU(int id, String nome, String marca, float clock, int core, int threads, int mark, float turbo, int tDP,
+    
+    public CPU(int id, String nome, String marca, float clock, float turbo, int core, int threads, int mark, int tDP,
             String arquitetura, float preco) 
     {
         this.id = id;
         this.nome = nome;
-        this.marca = marca;
         this.clock = clock;
         this.core = core;
         this.threads = threads;
         this.mark = mark;
         this.turbo = turbo;
-        TDP = tDP;
+        this.tDP = tDP;
         this.arquitetura = arquitetura;
         this.preco = preco;
     } 
@@ -95,11 +94,11 @@ public class CPU
     }
 
     public int getTDP() {
-        return TDP;
+        return tDP;
     }
 
     public void setTDP(int tDP) {
-        TDP = tDP;
+        this.tDP = tDP;
     }
 
     public String getArquitetura() {

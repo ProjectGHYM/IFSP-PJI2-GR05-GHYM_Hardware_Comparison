@@ -11,7 +11,7 @@ public class GPU
     private int TDP;
     private float preco;
     
-    public GPU(int id, String marca, String nome, int clock, int mark, int vRAM, int tDP, float preco) {
+    public GPU(int id, String nome, String marca, int clock, int vRAM, int mark, int tDP, float preco) {
         this.id = id;
         this.marca = marca;
         this.nome = nome;

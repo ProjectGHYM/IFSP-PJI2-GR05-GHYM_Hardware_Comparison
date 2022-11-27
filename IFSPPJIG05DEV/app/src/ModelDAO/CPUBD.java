@@ -1,101 +1,70 @@
 package ModelDAO;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import ModelEntidade.CPU;
 
-public class CPUBD {
-    static String listaProcessadorBD[][];
+public class CPUBD 
+{
+    public static CPU listaProcessador[];
 
-    public static String[][] getListaProcessadorBD() {
-        return listaProcessadorBD;
-    }
-
-    public static void setListaProcessadorBD(String[][] listaProcessadorBD) {
-        CPUBD.listaProcessadorBD = listaProcessadorBD;
-    }
-
-    public CPUBD() {
-        Connection c = ConexaoBD.getConexao();
-
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        String query = "SELECT COUNT(nome) AS NumeroProcessador FROM Processador;";
-
-        try {
-            int i = 0;
-
-            ps = c.prepareStatement(query);
-            rs = ps.executeQuery();
-            rs.next();
-            listaProcessadorBD = new String[Integer.parseInt(rs.getString("NumeroProcessador"))][3];
-            query = "SELECT nome, cores, clock FROM Processador;";
-            ps = c.prepareStatement(query);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                int j = 0;
-
-                listaProcessadorBD[i][j] = rs.getString("nome");
-                ++j;
-                listaProcessadorBD[i][j] = rs.getString("cores");
-                ++j;
-                listaProcessadorBD[i][j] = rs.getString("clock");
+    public CPUBD() 
+    {
+        CPUBD.achaTamanhoLista();
+        String query = "SELECT p.cod_cpu AS id, p.nome, m.nome AS marca, p.clock, p.turbo, p.cores, p.threads, p.mark, p.TDP AS tDP, p.arquitetura, p.preco" 
+            + " FROM processador AS p JOIN marca AS m ON p.id_marca = m.cod_marca;";
+        
+        try(
+            Connection c = ConexaoBD.getConexao();
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ) 
+        {
+            int i = 0; 
+            while (rs.next()) 
+            {
+                listaProcessador[i] = new CPU(rs.getInt("id"), rs.getString("nome"), rs.getString("marca"), 
+                rs.getFloat("clock"), rs.getFloat("turbo"), rs.getInt("cores"), rs.getInt("threads"), 
+                rs.getInt("mark"), rs.getInt("tDP"), rs.getString("arquitetura"), rs.getFloat("preco"));
                 ++i;
             }
-
-            setListaProcessadorBD(listaProcessadorBD);
-        } catch (SQLException e) {
+            setListaProcessador(listaProcessador);
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("Erro BD da CPU: " + e);
             System.exit(0);
-        } finally {
-            // Conexao.fecharConexao(c, ps, rs);
         }
     }
 
-    public String[] getMinimaCPUBD(float cpuRequisitos[]) {
-        int j = 0;
-
-        for (int i = 0; i < 15; ++i) {
-            if (Float.parseFloat(listaProcessadorBD[i][1])
-                    * Float.parseFloat(listaProcessadorBD[i][2]) >= cpuRequisitos[0]) {
-                if (Float.parseFloat(listaProcessadorBD[i][1])
-                        * Float.parseFloat(listaProcessadorBD[i][2]) < cpuRequisitos[1])
-                    ++j;
-            }
+    private static void achaTamanhoLista()
+    {
+        String query = "SELECT COUNT(nome) AS NumeroProcessador FROM Processador;";
+        try(
+            Connection c = ConexaoBD.getConexao();
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ) 
+        {
+            rs.next();
+            listaProcessador = new CPU[Integer.parseInt(rs.getString("NumeroProcessador"))];
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("Erro BD da CPU: " + e);
+            System.exit(0);
         }
-
-        String nomeCPUCompativel[] = new String[j];
-        j = 0;
-
-        for (int i = 0; i < 15; ++i) {
-            if (Float.parseFloat(listaProcessadorBD[i][1])
-                    * Float.parseFloat(listaProcessadorBD[i][2]) >= cpuRequisitos[0]) {
-                if (Float.parseFloat(listaProcessadorBD[i][1])
-                        * Float.parseFloat(listaProcessadorBD[i][2]) < cpuRequisitos[1]) {
-                    nomeCPUCompativel[j] = listaProcessadorBD[i][0];
-                    ++j;
-                }
-            }
-        }
-
-        return nomeCPUCompativel;
     }
 
-    public String[] getRecomendadaCPUBD(float cpuRequisitos[]) {
-        int j = 0;
-        for (int i = 0; i < 15; ++i) {
-            if (Float.parseFloat(listaProcessadorBD[i][1])
-                    * Float.parseFloat(listaProcessadorBD[i][2]) >= cpuRequisitos[1])
-                ++j;
-        }
+    public static CPU[] getListaProcessador() 
+    {
+        return listaProcessador;
+    }
 
-        String nomeCPUCompativel[] = new String[j];
-        j = 0;
-
-        for (int i = 0; i < 15; ++i) {
-            if (Float.parseFloat(listaProcessadorBD[i][1])
-                    * Float.parseFloat(listaProcessadorBD[i][2]) >= cpuRequisitos[1]) {
-                nomeCPUCompativel[j] = listaProcessadorBD[i][0];
-                ++j;
-            }
-        }
-        return nomeCPUCompativel;
+    public static void setListaProcessador(CPU[] listaProcessador) 
+    {
+        CPUBD.listaProcessador = listaProcessador;
     }
 }

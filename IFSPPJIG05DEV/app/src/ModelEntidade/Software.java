@@ -1,28 +1,22 @@
 package ModelEntidade;
 
-public class Software 
+public class Software
 {
     private int id;
     private String tipo;
     private String nome; 
-    private RecomendacaoRAM ramMinima;
-    private RecomendacaoCPU cpuMinima;
-    private RecomendacaoGPU gpuMinima;
-    private RecomendacaoRAM ramMax;
-    private RecomendacaoCPU cpuMax;
-    private RecomendacaoGPU gpuMax;
+    private RecomendacaoRAM ram;
+    private RecomendacaoCPU cpu;
+    private RecomendacaoGPU gpu;
     
-    public Software(int id, String tipo, String nome, RecomendacaoRAM ramMinima, RecomendacaoCPU cpuMinima,
-            RecomendacaoGPU gpuMinima, RecomendacaoRAM ramMax, RecomendacaoCPU cpuMax, RecomendacaoGPU gpuMax) {
+    public Software(int id, String tipo, String nome, RecomendacaoRAM ram, RecomendacaoCPU cpu, RecomendacaoGPU gpu) 
+    {
         this.id = id;
         this.tipo = tipo;
         this.nome = nome;
-        this.ramMinima = ramMinima;
-        this.cpuMinima = cpuMinima;
-        this.gpuMinima = gpuMinima;
-        this.ramMax = ramMax;
-        this.cpuMax = cpuMax;
-        this.gpuMax = gpuMax;
+        this.ram = ram;
+        this.cpu = cpu;
+        this.gpu = gpu;
     }
 
     public int getId() {
@@ -49,54 +43,27 @@ public class Software
         this.nome = nome;
     }
 
-    public RecomendacaoRAM getRamMinima() {
-        return ramMinima;
+    public RecomendacaoRAM getRequisitoRam() {
+        return ram;
     }
 
-    public void setRamMinima(RecomendacaoRAM ramMinima) {
-        this.ramMinima = ramMinima;
+    public void setRam(RecomendacaoRAM ram) {
+        this.ram = ram;
     }
 
-    public RecomendacaoCPU getCpuMinima() {
-        return cpuMinima;
+    public RecomendacaoCPU getRequisitoCpu() {
+        return cpu;
     }
 
-    public void setCpuMinima(RecomendacaoCPU cpuMinima) {
-        this.cpuMinima = cpuMinima;
+    public void setCpu(RecomendacaoCPU cpu) {
+        this.cpu = cpu;
     }
 
-    public RecomendacaoGPU getGpuMinima() {
-        return gpuMinima;
+    public RecomendacaoGPU getRequisitoGpu() {
+        return gpu;
     }
 
-    public void setGpuMinima(RecomendacaoGPU gpuMinima) {
-        this.gpuMinima = gpuMinima;
-    }
-
-    public RecomendacaoRAM getRamMax() {
-        return ramMax;
-    }
-
-    public void setRamMax(RecomendacaoRAM ramMax) {
-        this.ramMax = ramMax;
-    }
-
-    public RecomendacaoCPU getCpuMax() {
-        return cpuMax;
-    }
-
-    public void setCpuMax(RecomendacaoCPU cpuMax) {
-        this.cpuMax = cpuMax;
-    }
-
-    public RecomendacaoGPU getGpuMax() {
-        return gpuMax;
-    }
-
-    public void setGpuMax(RecomendacaoGPU gpuMax) {
-        this.gpuMax = gpuMax;
-    } 
-    
-    
-    
+    public void setGpu(RecomendacaoGPU gpu) {
+        this.gpu = gpu;
+    }  
 }

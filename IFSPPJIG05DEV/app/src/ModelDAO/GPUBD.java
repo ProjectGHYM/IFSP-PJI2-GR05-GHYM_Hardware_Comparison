@@ -1,92 +1,70 @@
 package ModelDAO;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import ModelEntidade.GPU;
 
-public class GPUBD {
-    static String listaGPUBD[][];
+public class GPUBD 
+{
+    public static GPU listaGPU[];
 
-    public static String[][] getGPU() {
-        return listaGPUBD;
-    }
-
-    public static void setGPU(String[][] listaGPUBD) {
-        GPUBD.listaGPUBD = listaGPUBD;
-    }
-
-    public GPUBD() {
-        Connection c = ConexaoBD.getConexao();
-
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        String query = "SELECT COUNT(nome) AS NumeroGPU FROM GPU;";
-
-        try {
+    public GPUBD() 
+    {
+        GPUBD.achaTamanhoLista();
+        String query = "SELECT g.cod_gpu AS id, g.nome, m.nome AS marca, g.clock, g.VRAM AS vRAM, g.mark, g.TDP AS tDP, g.preco " + 
+            "FROM gpu AS g JOIN marca AS m ON g.id_marca = m.cod_marca;";
+        
+        try(
+            Connection c = ConexaoBD.getConexao();
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ) 
+        {
             int i = 0;
-
-            ps = c.prepareStatement(query);
-            rs = ps.executeQuery();
-            rs.next();
-            listaGPUBD = new String[Integer.parseInt(rs.getString("NumeroGPU"))][3];
-            query = "SELECT nome, clock, VRAM FROM GPU;";
-            ps = c.prepareStatement(query);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                int j = 0;
-
-                listaGPUBD[i][j] = rs.getString("nome");
-                ++j;
-                listaGPUBD[i][j] = rs.getString("clock");
-                ++j;
-                listaGPUBD[i][j] = rs.getString("VRAM");
-                ++i;
+            while (rs.next()) 
+            {
+                listaGPU[i] = new GPU(rs.getInt("id"), rs.getString("nome"), rs.getString("marca"), rs.getInt("clock"),
+                 rs.getInt("vRAM"), rs.getInt("mark"), rs.getInt("tDP"), rs.getFloat("preco"));
+                
+                i++;
             }
-            setGPU(listaGPUBD);
-        } catch (SQLException e) {
+            setListaGPU(listaGPU);
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("Erro BD da GPU: " + e);
             System.exit(0);
-        } finally {
-            // Conexao.fecharConexao(c, ps, rs);
         }
     }
 
-    public String[] getMinimaGPUBD(float gpuRequisitos[]) {
-        int j = 0;
-        for (int i = 0; i < 15; ++i) {
-            if (Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= gpuRequisitos[0]) {
-                if (Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) < gpuRequisitos[1])
-                    ++j;
-            }
+    private static void achaTamanhoLista()
+    {
+        String query = "SELECT COUNT(nome) AS NumeroGPU FROM GPU;";
+        try(
+            Connection c = ConexaoBD.getConexao();
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ) 
+        {
+            rs.next();
+            listaGPU = new GPU[Integer.parseInt(rs.getString("NumeroGPU"))];
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("Erro BD da GPU: " + e);
+            System.exit(0);
         }
-        String nomeGPUCompativel[] = new String[j];
-        j = 0;
-        for (int i = 0; i < 15; ++i) {
-            if (Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= gpuRequisitos[0]) {
-                if (Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) < gpuRequisitos[1]) {
-                    nomeGPUCompativel[j] = listaGPUBD[i][0] + " " + listaGPUBD[i][2] + "GB";
-                    ++j;
-                }
-            }
-        }
-        return nomeGPUCompativel;
+    }
+    
+    public static GPU[] getListaGPU() 
+    {
+        return listaGPU;
     }
 
-    public String[] getRecomendadaGPUBD(float gpuRequisitos[]) {
-        int j = 0;
-
-        for (int i = 0; i < 15; ++i) {
-            if (Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= gpuRequisitos[1])
-                ++j;
-        }
-
-        String nomeGPUCompativel[] = new String[j];
-        j = 0;
-
-        for (int i = 0; i < 15; ++i) {
-            if (Float.parseFloat(listaGPUBD[i][1]) * Float.parseFloat(listaGPUBD[i][2]) >= gpuRequisitos[1]) {
-                nomeGPUCompativel[j] = listaGPUBD[i][0] + " " + listaGPUBD[i][2] + "GB";
-                ++j;
-            }
-        }
-
-        return nomeGPUCompativel;
+    public static void setListaGPU(GPU[] listaGPU) 
+    {
+        GPUBD.listaGPU = listaGPU;
     }
 }
