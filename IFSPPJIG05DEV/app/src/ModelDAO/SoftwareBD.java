@@ -16,10 +16,7 @@ public class SoftwareBD
     public SoftwareBD()
     {
         achaTamanhoLista();
-        String query = "SELECT s.cod_soft AS id, t.nome AS tipo, s.nome_soft AS nome, r.capacidademin, c.coremin, c.clockmin, g.vrammin, g.clockmin, " +
-        "r.capacidaderec, c.corerec, c.clockrec, g.vramrec, g.clockrec FROM Software AS s JOIN tipo AS t ON s.id_tipo = t.cod_tipo " +
-        "JOIN recomendacaoram AS r ON s.id_recomendacaoram = r.cod_recram JOIN recomendacaocpu AS c ON s.id_recomendacaocpu = c.cod_reccpu " +
-        "JOIN recomendacaogpu AS g ON s.id_recomendacaogpu = g.cod_recgpu;";
+        String query = "SELECT * FROM requisitos_soft;";
 
         try(
             Connection c = ConexaoBD.getConexao();
@@ -33,11 +30,11 @@ public class SoftwareBD
             {
                 RecomendacaoRAM recRAM = new RecomendacaoRAM(rs.getInt("capacidademin"), rs.getInt("capacidaderec"));
 
-                RecomendacaoCPU recCPU = new RecomendacaoCPU(rs.getInt("coremin"), rs.getFloat("clockmin"), rs.getInt("corerec"), rs.getFloat("clockrec"));
+                RecomendacaoCPU recCPU = new RecomendacaoCPU(rs.getInt("coremin"), rs.getFloat("clockmin_cpu"), rs.getInt("corerec"), rs.getFloat("clockrec_cpu"));
 
-                RecomendacaoGPU recGPU = new RecomendacaoGPU(rs.getInt("vrammin"), rs.getInt("clockmin"), rs.getInt("vramrec"), rs.getInt("clockrec")); 
+                RecomendacaoGPU recGPU = new RecomendacaoGPU(rs.getInt("vrammin"), rs.getInt("clockmin_gpu"), rs.getInt("vramrec"), rs.getInt("clockrec_gpu")); 
 
-                listaSoftware[i] = new Software(rs.getInt("id"), rs.getString("tipo"), rs.getString("nome"),
+                listaSoftware[i] = new Software(rs.getInt("cod_soft"), rs.getString("tipo"), rs.getString("nome_soft"),
                 recRAM, recCPU, recGPU);
 
                 ++i;

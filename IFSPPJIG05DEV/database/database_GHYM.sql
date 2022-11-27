@@ -340,9 +340,11 @@ SELECT * FROM GPU WHERE cod_gpu = 1;
 SELECT * FROM GPU WHERE cod_gpu = 2;
 
 -- TELA DE RECOMENDAÇÃO DE UM SOFTWARE ESPECIFICO
-CREATE VIEW rec_soft AS
-SELECT cod_soft, nome_soft, capacidademin, coremin, c.clockmin AS clockmin_cpu, g.clockmin AS clockmin_gpu, vrammin, capacidaderec, corerec, c.clockrec AS clockrec_cpu, g.clockrec AS clockrec_gpu, vramrec
+CREATE OR REPLACE VIEW requisitos_soft AS
+SELECT cod_soft, nome_soft, t.nome AS tipo, capacidademin, coremin, c.clockmin AS clockmin_cpu, g.clockmin AS clockmin_gpu, vrammin, capacidaderec, corerec, c.clockrec AS clockrec_cpu, g.clockrec AS clockrec_gpu, vramrec
 FROM Software
+INNER JOIN tipo t
+ON id_tipo = cod_tipo
 INNER JOIN RecomendacaoRam
 ON id_recomendacaoram = cod_recram
 INNER JOIN RecomendacaoCpu c
