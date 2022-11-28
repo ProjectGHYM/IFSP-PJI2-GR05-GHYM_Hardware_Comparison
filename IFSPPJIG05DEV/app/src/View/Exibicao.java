@@ -81,7 +81,7 @@ public class Exibicao extends ViewMae
 			}
 			if (i == 14 && listaNomeCPU.length >= 14) 
 			{
-				telaFinal += listaNomeCPU[i] + ".";
+				telaFinal += listaNomeCPU[i].getNome() + ".";
 			}
 			++cortaLinha;
 		}
