@@ -1,6 +1,11 @@
-package ModelEntidade;
+package ModelNegocio;
 
 import java.util.SortedSet;
+
+import ModelEntidade.RecomendacaoCPU;
+import ModelEntidade.RecomendacaoGPU;
+import ModelEntidade.RecomendacaoRAM;
+import ModelEntidade.Software;
 
 public class Requisito 
 {
@@ -12,24 +17,33 @@ public class Requisito
     public Requisito(SortedSet<Software> listaSoftwaresEscolhidos)
     {
         this.listaSoftwareEscolhido = listaSoftwaresEscolhidos;
+    }
 
+    public Requisito definirRequisitoGeral() 
+    {
+        RecomendacaoCPU requisitoCPU = null;
+        RecomendacaoGPU requisitoGPU = null;
+        RecomendacaoRAM requisitoRAM = null;
         for(Software software: listaSoftwareEscolhido)
         {
-            if(cpu == null && gpu == null && ram == null)
+            if(requisitoCPU == null && requisitoGPU == null && requisitoRAM == null)
             {
-                cpu = software.getRequisitoCpu();
-                gpu = software.getRequisitoGpu();
-                ram = software.getRequisitoRam();
+                requisitoCPU = software.getRequisitoCpu();
+                requisitoGPU = software.getRequisitoGpu();
+                requisitoRAM = software.getRequisitoRam();
             }
             else
             {
-                cpu = RecomendacaoCPU.achaMaiorRequisito(cpu, software.getRequisitoCpu());
-                gpu = RecomendacaoGPU.achaMaiorRequisito(gpu, software.getRequisitoGpu());
-                ram = RecomendacaoRAM.achaMaiorRequisito(ram, software.getRequisitoRam());
+                requisitoCPU = RecomendacaoCPU.achaMaiorRequisito(requisitoCPU, software.getRequisitoCpu());
+                requisitoGPU = RecomendacaoGPU.achaMaiorRequisito(requisitoGPU, software.getRequisitoGpu());
+                requisitoRAM = RecomendacaoRAM.achaMaiorRequisito(requisitoRAM, software.getRequisitoRam());
             }
-            System.out.println(gpu.getVramMin() + " " + cpu.getClockMin() + " " + ram.getCapacidadeMin());
-        }    
+        }
+
+        Requisito requisitos = new Requisito(requisitoCPU, requisitoGPU, requisitoRAM);
+        return requisitos;
     }
+    
 
     public Requisito(RecomendacaoCPU cpu, RecomendacaoGPU gpu, RecomendacaoRAM ram) 
     {

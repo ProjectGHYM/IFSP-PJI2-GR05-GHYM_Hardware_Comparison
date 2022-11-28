@@ -20,7 +20,7 @@ public class AchaCompativel
         
         for (int i = 0; i < CPUBD.listaProcessador.length; i++) 
         {
-            if (CPUBD.listaProcessador[i].getCore() >= cpuRequisito.getCoreMax() && CPUBD.listaProcessador[i].getClock() >= cpuRequisito.getClockMax())
+            if ((CPUBD.listaProcessador[i].getCore() >= cpuRequisito.getCoreMax() && CPUBD.listaProcessador[i].getClock() >= cpuRequisito.getClockMax()))
             {
                 indiceCPUsCompativeis += String.format((CPUBD.listaProcessador[i].getId() - 1) + "-");
             }
@@ -45,7 +45,8 @@ public class AchaCompativel
         
         for (int i = 0; i < CPUBD.listaProcessador.length; i++) 
         {
-            if (CPUBD.listaProcessador[i].getCore() >= cpuRequisito.getCoreMin() && CPUBD.listaProcessador[i].getClock() >= cpuRequisito.getClockMin())
+            System.out.println(CPUBD.listaProcessador[i].getNome() + "  "+CPUBD.listaProcessador[i].getCore() + " " + cpuRequisito.getCoreMin() + " " + cpuRequisito.getCoreMax() + " " + cpuRequisito.getClockMin() + " " + CPUBD.listaProcessador[i].getClock() + " " + cpuRequisito.getClockMax());
+            if ((CPUBD.listaProcessador[i].getCore() >= cpuRequisito.getCoreMin() && CPUBD.listaProcessador[i].getCore() <= cpuRequisito.getCoreMax()) && (CPUBD.listaProcessador[i].getClock() >= cpuRequisito.getClockMin() && CPUBD.listaProcessador[i].getClock() <= cpuRequisito.getClockMax()))
             {
                 indiceCPUsCompativeis += String.format((CPUBD.listaProcessador[i].getId() - 1) + "-");
             }
@@ -95,7 +96,7 @@ public class AchaCompativel
         
         for (int i = 0; i < GPUBD.listaGPU.length; i++) 
         {
-            if (GPUBD.listaGPU[i].getVRAM() >= cpuRequisito.getVramMin() && GPUBD.listaGPU[i].getClock() >= cpuRequisito.getClockMin())
+            if ((GPUBD.listaGPU[i].getVRAM() >= cpuRequisito.getVramMin() && GPUBD.listaGPU[i].getVRAM() <= cpuRequisito.getVramMax()) && (GPUBD.listaGPU[i].getClock() >= cpuRequisito.getClockMin() && GPUBD.listaGPU[i].getClock() <= cpuRequisito.getClockMax()))
             {
                 indiceGPUsCompativeis += String.format((GPUBD.listaGPU[i].getId() - 1) + "-");
             }
@@ -145,7 +146,7 @@ public class AchaCompativel
         
         for (int i = 0; i < RAMBD.listaRAM.length; i++) 
         {
-            if (RAMBD.listaRAM[i].getCapacidade() >= ramRequisito.getCapacidadeMin())
+            if (RAMBD.listaRAM[i].getCapacidade() >= ramRequisito.getCapacidadeMin() && RAMBD.listaRAM[i].getCapacidade() <= ramRequisito.getCapacidadeMax())
             {
                 indiceRAMsCompativeis += String.format((RAMBD.listaRAM[i].getId() - 1) + "-");
             }

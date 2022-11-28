@@ -4,9 +4,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import View.*;
 import ModelDAO.*;
-import ModelEntidade.Requisito;
 import ModelEntidade.Software;
 import ModelNegocio.AchaCompativel;
+import ModelNegocio.Requisito;
 import ModelNegocio.ValidacaoSoftware;
 
 public class AppGHYMInicializador 
@@ -54,6 +54,7 @@ public class AppGHYMInicializador
 
 			AchaCompativel achaRequisito = new AchaCompativel();
 			Requisito requisitoLista = new Requisito(listaSoftwareEscolhido);
+			requisitoLista = requisitoLista.definirRequisitoGeral();
 
 			
 			exibir.exibirConfiguraçãoMinima(listaSoftwareEscolhido, achaRequisito.achaCPUMinCompativeis(requisitoLista.getCpu()),

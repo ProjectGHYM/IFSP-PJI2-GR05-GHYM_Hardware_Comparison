@@ -79,7 +79,7 @@ public class Exibicao extends ViewMae
 			{
 				telaFinal += listaNomeCPU[i].getNome() + ", 		";
 			}
-			if (i == 14) 
+			if (i == 14 && listaNomeCPU.length >= 14) 
 			{
 				telaFinal += listaNomeCPU[i] + ".";
 			}
@@ -98,7 +98,7 @@ public class Exibicao extends ViewMae
 			{
 				telaFinal += listaNomeGPU[i].getNome() + ", 		";
 			}
-			if (i == 9) 
+			if (i == 9 && listaNomeGPU.length >= 9) 
 			{
 				telaFinal += listaNomeGPU[i].getNome() + ".";
 			}
@@ -117,7 +117,7 @@ public class Exibicao extends ViewMae
 			{
 				telaFinal += listaNomeRAM[i].getNome() + ", 		";
 			}
-			if (i == 14) 
+			if (i == 14 && listaNomeRAM.length >= 14) 
 			{
 				telaFinal += listaNomeRAM[i].getNome() + ".";
 			}

@@ -35,7 +35,7 @@ public class RecomendacaoGPU
             maiorRequesito.setClockMax(opcao2.getClockMax());
             maiorRequesito.setVramMax(opcao2.getVramMax());
         }
-        return opcao2;
+        return maiorRequesito;
     }
 
     public int getVramMax() 
